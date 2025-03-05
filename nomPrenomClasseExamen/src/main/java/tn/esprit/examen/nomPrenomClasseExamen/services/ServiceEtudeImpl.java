@@ -15,8 +15,8 @@ public class ServiceEtudeImpl implements IServiceEtude {
     private ServiceEtudeRepository serviceEtudeRepository;
 
     @Override
-    public void addServiceEtude(Service_Etude serviceEtude) {
-        serviceEtudeRepository.save(serviceEtude);
+    public Service_Etude addServiceEtude(Service_Etude serviceEtude) {
+        return serviceEtudeRepository.save(serviceEtude);
     }
 
     @Override

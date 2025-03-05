@@ -18,8 +18,7 @@ public class ServiceEtudeRestController {
 
     @PostMapping("/add")
     public Service_Etude addServiceEtude(@RequestBody Service_Etude serviceEtude) {
-        serviceEtudeService.addServiceEtude(serviceEtude);
-        return serviceEtude;
+        return  serviceEtudeService.addServiceEtude(serviceEtude);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -46,12 +45,4 @@ public class ServiceEtudeRestController {
     public Service_Etude retrieveServiceEtude(@PathVariable Long id) {
         return serviceEtudeService.retrieveServiceEtude(id);
     }
-/*
-    // Additional endpoint to assign a Service_Etude to a user (if needed)
-    @PostMapping("/assign-to-user/{userId}/{serviceEtudeId}")
-    public void assignServiceEtudeToUser(
-            @PathVariable Long userId,
-            @PathVariable Long serviceEtudeId) {
-        serviceEtudeService.assignServiceEtudeToUser(userId, serviceEtudeId);
-    }*/
 }

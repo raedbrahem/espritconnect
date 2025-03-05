@@ -1,12 +1,15 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -35,6 +38,13 @@ public class Service_Etude implements Serializable {
     @CreationTimestamp // Automatically sets the publication date
     @Column(nullable = false, updatable = false)
     LocalDateTime publicationDate;
+
+
+    @OneToMany(mappedBy = "serviceEtude")
+    @ToStringExclude
+    @JsonIgnore
+    List<Commentaire> commentaires;
+
 
     public long getId() {
         return id;
@@ -75,4 +85,5 @@ public class Service_Etude implements Serializable {
     public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
+
 }
