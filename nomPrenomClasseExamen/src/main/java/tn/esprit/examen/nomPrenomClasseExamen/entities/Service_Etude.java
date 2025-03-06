@@ -45,6 +45,11 @@ public class Service_Etude implements Serializable {
     @JsonIgnore
     List<Commentaire> commentaires;
 
+    @OneToMany(mappedBy = "serviceEtude")
+    @JsonIgnore // Prevent serialization issues (optional)
+    @ToStringExclude // Prevent circular reference in toString (optional)
+    List<rating_etude> ratings;
+
 
     public long getId() {
         return id;
