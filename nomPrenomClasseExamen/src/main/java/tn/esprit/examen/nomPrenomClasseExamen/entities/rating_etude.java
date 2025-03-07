@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "service_etude_id"})) // Enforce uniqueness
 public class rating_etude implements Serializable {
 
     @Id
@@ -28,8 +28,10 @@ public class rating_etude implements Serializable {
     @Column(nullable = false, updatable = false)
     LocalDateTime dateRating;
 
-    @Column(nullable = false)
-    Long userId; // ID of the student who rated
+    // Many-to-One relationship with User
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 
     // Many-to-One relationship with Service_Etude
     @ManyToOne

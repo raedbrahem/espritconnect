@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,44 +27,13 @@ public class Commentaire implements Serializable {
     @Column(nullable = false, updatable = false)
     LocalDateTime datePublication;
 
-    @Column(nullable = false)
-    long userId;
+    // Many-to-One relationship with User
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 
     // Many-to-One relationship with Service_Etude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "service_etude_id", nullable = false)
     Service_Etude serviceEtude;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContenu() {
-        return contenu;
-    }
-
-    public void setContenu(String contenu) {
-        this.contenu = contenu;
-    }
-
-    public LocalDateTime getDatePublication() {
-        return datePublication;
-    }
-
-    public void setDatePublication(LocalDateTime datePublication) {
-        this.datePublication = datePublication;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
 }
