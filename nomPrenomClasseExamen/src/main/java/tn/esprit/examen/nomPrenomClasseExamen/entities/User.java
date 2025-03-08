@@ -22,4 +22,7 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     String username;
 
+    @OneToMany(mappedBy = "tutor")
+    List<Service_Etude> services;
+
 }
