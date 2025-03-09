@@ -1,9 +1,12 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Service_Etude;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -32,4 +35,7 @@ public class User {
 
     private String statutVerification;
     private String telephone;
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Service_Etude> serviceEtudes;
 }
