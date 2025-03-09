@@ -3,7 +3,7 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Service_Etude;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.Date;
 import java.util.List;
@@ -51,11 +51,11 @@ public class User {
     @JsonIgnore
     private List<Service_Etude> serviceEtudesProvided;
 
-    public List<Service_Etude> getServiceEtudes() {
-        return serviceEtudes;
+    public List<Service_Etude> getServiceEtudesProvided() {
+        return serviceEtudesProvided;
     }
 
-    public void setServiceEtudes(List<Service_Etude> serviceEtudes) {
-        this.serviceEtudes = serviceEtudes;
+    public void setServiceEtudesProvided(List<Service_Etude> serviceEtudesProvided) {
+        this.serviceEtudesProvided = serviceEtudesProvided;
     }
 }

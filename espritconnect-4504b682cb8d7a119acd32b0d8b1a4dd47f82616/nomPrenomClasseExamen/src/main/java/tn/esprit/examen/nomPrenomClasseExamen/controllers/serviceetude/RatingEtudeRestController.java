@@ -1,10 +1,10 @@
-package tn.esprit.examen.nomPrenomClasseExamen.controllers;
+package tn.esprit.examen.nomPrenomClasseExamen.controllers.serviceetude;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.rating_etude;
-import tn.esprit.examen.nomPrenomClasseExamen.services.IRating_etudeService;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.rating_etude;
+import tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude.IRating_etudeService;
 
 import java.util.List;
 

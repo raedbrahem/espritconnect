@@ -1,11 +1,11 @@
-package tn.esprit.examen.nomPrenomClasseExamen.controllers;
+package tn.esprit.examen.nomPrenomClasseExamen.controllers.serviceetude;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.ChatMessage;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.ChatMessage;
 
 @Controller
 public class ChatController {

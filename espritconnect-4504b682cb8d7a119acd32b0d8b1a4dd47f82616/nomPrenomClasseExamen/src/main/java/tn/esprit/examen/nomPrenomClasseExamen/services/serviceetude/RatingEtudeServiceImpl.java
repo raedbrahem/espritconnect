@@ -1,9 +1,9 @@
-package tn.esprit.examen.nomPrenomClasseExamen.services;
+package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.rating_etude;
-import tn.esprit.examen.nomPrenomClasseExamen.repositories.rating_etudeRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.rating_etude;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.rating_etudeRepository;
 
 import java.util.List;
 

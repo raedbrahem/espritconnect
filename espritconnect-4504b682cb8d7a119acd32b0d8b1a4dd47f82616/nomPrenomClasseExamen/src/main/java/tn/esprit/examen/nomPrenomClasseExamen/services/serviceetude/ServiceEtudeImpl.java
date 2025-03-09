@@ -1,13 +1,12 @@
-package tn.esprit.examen.nomPrenomClasseExamen.services;
+package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Service_Etude;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
-import tn.esprit.examen.nomPrenomClasseExamen.repositories.ServiceEtudeRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.ServiceEtudeRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserRepository;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServiceEtudeImpl implements IServiceEtude {
@@ -37,7 +36,6 @@ public class ServiceEtudeImpl implements IServiceEtude {
         return serviceEtudeRepository.findAll();
     }
 
-    // Additional method to retrieve a Service_Etude by ID
     public Service_Etude retrieveServiceEtude(Long id) {
         return serviceEtudeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + id));
@@ -45,22 +43,18 @@ public class ServiceEtudeImpl implements IServiceEtude {
 
     @Override
     public void assignProjetToService(Long userId, Long serviceId) {
-        // Fetch the User by ID
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
-
-        // Fetch the Service_Etude by ID
-        Service_Etude serviceEtude = serviceEtudeRepository.findById(serviceId).orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + serviceId));
-
-        // Add the Service_Etude to the User's list of services participated in
-        user.getServiceEtudes().add(serviceEtude);
-
-        // Add the User to the Service_Etude's list of users participating
-        serviceEtude.getClients().add(user);
-
-        // Save both entities
+        User user = userRepository.findById(userId).get();
+        Service_Etude serviceEtude = serviceEtudeRepository.findById(serviceId).get();
+        if (!user.getServiceEtudesProvided().contains(serviceEtude)) {
+            user.getServiceEtudesProvided().add(serviceEtude);
+        }
+        if (!serviceEtude.getClients().contains(user)) {
+            serviceEtude.getClients().add(user);
+        }
         userRepository.save(user);
         serviceEtudeRepository.save(serviceEtude);
     }
+
 
 
 }

@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.controllers;
+package tn.esprit.examen.nomPrenomClasseExamen.controllers.serviceetude;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

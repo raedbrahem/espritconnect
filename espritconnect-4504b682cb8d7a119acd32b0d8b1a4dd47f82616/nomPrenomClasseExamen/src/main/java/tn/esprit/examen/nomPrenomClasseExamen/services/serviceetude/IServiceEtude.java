@@ -1,6 +1,6 @@
-package tn.esprit.examen.nomPrenomClasseExamen.services;
+package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Service_Etude;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.List;
 

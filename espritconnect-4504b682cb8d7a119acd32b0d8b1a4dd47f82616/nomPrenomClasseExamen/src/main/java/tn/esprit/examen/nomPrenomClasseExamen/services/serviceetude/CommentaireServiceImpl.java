@@ -1,9 +1,9 @@
-package tn.esprit.examen.nomPrenomClasseExamen.services;
+package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Commentaire;
-import tn.esprit.examen.nomPrenomClasseExamen.repositories.CommentaireRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Commentaire;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.CommentaireRepository;
 
 import java.util.List;
 

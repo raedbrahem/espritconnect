@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.entities;
+package tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude;
 
 import jakarta.persistence.*;
 import lombok.*;

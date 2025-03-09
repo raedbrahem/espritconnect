@@ -1,6 +1,6 @@
-package tn.esprit.examen.nomPrenomClasseExamen.controllers;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.ChatMessage;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.MessageType;
+package tn.esprit.examen.nomPrenomClasseExamen.controllers.serviceetude;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.ChatMessage;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
