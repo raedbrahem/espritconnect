@@ -5,12 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-
 @Getter
 @Setter
 @ToString
@@ -24,7 +23,6 @@ public class Service_Etude implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    // Many-to-One relationship with User (Tutor)
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
     User tutor;
@@ -41,9 +39,9 @@ public class Service_Etude implements Serializable {
 
     @OneToMany(mappedBy = "serviceEtude", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    List<Commentaire> commentaires;
+    List<Commentaire> commentaires = new ArrayList<>();
 
     @OneToMany(mappedBy = "serviceEtude", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    List<rating_etude> ratings;
+    List<rating_etude> ratings = new ArrayList<>();
 }

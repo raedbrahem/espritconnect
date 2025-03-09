@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
