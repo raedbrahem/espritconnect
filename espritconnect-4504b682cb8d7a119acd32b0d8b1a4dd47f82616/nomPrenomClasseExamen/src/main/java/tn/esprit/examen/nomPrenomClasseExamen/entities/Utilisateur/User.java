@@ -35,7 +35,27 @@ public class User {
 
     private String statutVerification;
     private String telephone;
+
+    // Existing OneToMany relationship with Service_Etude
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Service_Etude> serviceEtudes;
+
+    // New ManyToMany relationship with Service_Etude
+    @ManyToMany
+    @JoinTable(
+            name = "user_service_etude",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_etude_id")
+    )
+    @JsonIgnore
+    private List<Service_Etude> serviceEtudesProvided;
+
+    public List<Service_Etude> getServiceEtudes() {
+        return serviceEtudes;
+    }
+
+    public void setServiceEtudes(List<Service_Etude> serviceEtudes) {
+        this.serviceEtudes = serviceEtudes;
+    }
 }

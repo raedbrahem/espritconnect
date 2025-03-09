@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -45,4 +46,17 @@ public class Service_Etude implements Serializable {
     @OneToMany(mappedBy = "serviceEtude", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<rating_etude> ratings = new ArrayList<>();
+
+    // New ManyToMany relationship with User
+    @ManyToMany(mappedBy = "serviceEtudesProvided")
+    @JsonIgnore
+    private List<User> clients;
+
+    public List<User> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<User> clients) {
+        this.clients = clients;
+    }
 }
