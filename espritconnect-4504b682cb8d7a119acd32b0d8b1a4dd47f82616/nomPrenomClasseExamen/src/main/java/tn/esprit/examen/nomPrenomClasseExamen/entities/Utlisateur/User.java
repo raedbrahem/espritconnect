@@ -1,8 +1,9 @@
-package tn.esprit.examen.nomPrenomClasseExamen.entities;
+package tn.esprit.examen.nomPrenomClasseExamen.entities.Utlisateur;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Service_Etude;
 
 import java.util.List;
 
