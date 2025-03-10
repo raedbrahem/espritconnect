@@ -28,7 +28,7 @@ public class ServiceEtudeImpl implements IServiceEtude {
 
     @Override
     public Service_Etude updateServiceEtude(Service_Etude serviceEtude) {
-            return serviceEtudeRepository.save(serviceEtude);
+        return serviceEtudeRepository.save(serviceEtude);
     }
 
     @Override
@@ -55,6 +55,17 @@ public class ServiceEtudeImpl implements IServiceEtude {
         serviceEtudeRepository.save(serviceEtude);
     }
 
-
-
+    @Override
+    public void unassignProjetToService(Long userId, Long serviceId) {
+        User user = userRepository.findById(userId).get();
+        Service_Etude serviceEtude = serviceEtudeRepository.findById(serviceId).get();
+        if (user.getServiceEtudesProvided().contains(serviceEtude)) {
+            user.getServiceEtudesProvided().remove(serviceEtude);
+        }
+        if (serviceEtude.getClients().contains(user)) {
+            serviceEtude.getClients().remove(user);
+        }
+        userRepository.save(user);
+        serviceEtudeRepository.save(serviceEtude);
+    }
 }

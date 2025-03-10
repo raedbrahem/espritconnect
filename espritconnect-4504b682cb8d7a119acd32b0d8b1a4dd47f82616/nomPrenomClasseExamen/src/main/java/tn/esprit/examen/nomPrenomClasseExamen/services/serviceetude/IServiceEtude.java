@@ -11,4 +11,5 @@ public interface IServiceEtude {
     List<Service_Etude> getAllServiceEtudes();
     Service_Etude retrieveServiceEtude(Long id);
     void assignProjetToService(Long userId, Long serviceId);
+    void unassignProjetToService(Long userId, Long serviceId);
 }

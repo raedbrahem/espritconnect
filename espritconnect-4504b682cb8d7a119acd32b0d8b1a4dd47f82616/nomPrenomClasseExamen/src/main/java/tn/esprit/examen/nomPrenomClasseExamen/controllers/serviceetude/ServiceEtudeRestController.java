@@ -49,4 +49,9 @@ public class ServiceEtudeRestController {
     public void assignProjetToService(@PathVariable Long userId, @PathVariable Long serviceId) {
         serviceEtudeService.assignProjetToService(userId, serviceId);
     }
+
+    @PostMapping("/unassign/{userId}/{serviceId}")
+    public void unassignProjetToService(@PathVariable Long userId, @PathVariable Long serviceId) {
+        serviceEtudeService.unassignProjetToService(userId, serviceId);
+    }
 }
