@@ -6,20 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Call;
-import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.CallRepository;
 
 @RestController
 @RequestMapping("/api/calls")
 public class CallController {
-
     private final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-
-    private final CallRepository callRepository;
-
-    public CallController(CallRepository callRepository) {
-        this.callRepository = callRepository;
-    }
-
     // Endpoint to create a call
     @PostMapping("/create")
     public String createCall() {
