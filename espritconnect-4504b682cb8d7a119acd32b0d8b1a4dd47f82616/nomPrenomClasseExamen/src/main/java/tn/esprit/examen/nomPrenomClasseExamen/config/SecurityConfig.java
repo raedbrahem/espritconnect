@@ -23,13 +23,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register", "/api/login").permitAll()
+                        // Autoriser ces endpoints sans authentification
+                        .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -2,7 +2,6 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.Date;
 
 @Entity
