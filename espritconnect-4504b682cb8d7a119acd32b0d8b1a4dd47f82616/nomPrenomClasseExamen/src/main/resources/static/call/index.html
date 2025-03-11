@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Peer-to-Peer Calls</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Add styles if needed -->
+</head>
+<body>
+<h1>WebRTC Video Call</h1>
+
+<section>
+    <h2>1. Start your Webcam</h2>
+    <div class="videos">
+        <div>
+            <h3>Local Stream</h3>
+            <video id="webcamVideo" autoplay playsinline></video>
+        </div>
+        <div>
+            <h3>Remote Stream</h3>
+            <video id="remoteVideo" autoplay playsinline></video>
+        </div>
+    </div>
+    <button id="webcamButton">Start Webcam</button>
+</section>
+
+<section>
+    <h2>2. Create a New Call</h2>
+    <button id="callButton" disabled>Create Call</button>
+    <p>Call ID: <span id="generatedCallId"></span></p>
+</section>
+
+<section>
+    <h2>3. Join a Call</h2>
+    <p>Enter the call ID to join:</p>
+    <input id="callInput" type="text" placeholder="Enter Call ID">
+    <button id="answerButton" disabled>Answer</button>
+</section>
+
+<section>
+    <h2>4. Hang Up</h2>
+    <button id="hangupButton" disabled>Hang Up</button>
+</section>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
