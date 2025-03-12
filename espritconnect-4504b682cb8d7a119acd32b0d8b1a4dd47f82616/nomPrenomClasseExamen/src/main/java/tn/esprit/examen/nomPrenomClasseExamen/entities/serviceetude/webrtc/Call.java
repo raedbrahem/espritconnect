@@ -1,6 +1,5 @@
-package tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude;
+package tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.webrtc;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

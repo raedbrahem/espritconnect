@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
+package tn.esprit.examen.nomPrenomClasseExamen.services.miro;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

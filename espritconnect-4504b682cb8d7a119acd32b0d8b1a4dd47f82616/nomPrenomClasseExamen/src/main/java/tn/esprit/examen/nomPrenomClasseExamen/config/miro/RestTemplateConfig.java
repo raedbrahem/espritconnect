@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.config;
+package tn.esprit.examen.nomPrenomClasseExamen.config.miro;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

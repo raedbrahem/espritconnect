@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude;
+package tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.chat;
 
 import lombok.*;
 

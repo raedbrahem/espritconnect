@@ -2,10 +2,7 @@ package tn.esprit.examen.nomPrenomClasseExamen.controllers.serviceetude.call;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Call;
 
 @RestController
 @RequestMapping("/api/calls")

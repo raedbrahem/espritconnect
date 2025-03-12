@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.config;
+package tn.esprit.examen.nomPrenomClasseExamen.config.chat;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
