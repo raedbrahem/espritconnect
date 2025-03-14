@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.TutoringEvent;
 import tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude.IServiceTutoringEvent;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 @RequiredArgsConstructor
 @RequestMapping("/tutoring-event")
 @RestController
