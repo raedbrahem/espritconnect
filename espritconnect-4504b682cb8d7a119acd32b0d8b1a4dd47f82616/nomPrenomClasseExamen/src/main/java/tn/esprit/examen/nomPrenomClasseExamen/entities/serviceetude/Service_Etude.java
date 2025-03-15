@@ -52,6 +52,11 @@ public class Service_Etude implements Serializable {
     @JsonIgnore
     private List<User> clients;
 
+
+    @OneToMany(mappedBy = "serviceEtude", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    List<TutoringEvent> tutoringEvents = new ArrayList<>();
+
     public List<User> getClients() {
         return clients;
     }
