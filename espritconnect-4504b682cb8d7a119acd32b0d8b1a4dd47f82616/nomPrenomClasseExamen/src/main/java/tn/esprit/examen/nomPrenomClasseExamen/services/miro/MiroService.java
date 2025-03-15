@@ -18,16 +18,20 @@ public class MiroService {
     private String dashboardId;
 
     private final RestTemplate restTemplate;
+
     public MiroService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public String getDashboardDetails() {
+    public DashboardDetails getDashboardDetails() {
         String url = "https://api.miro.com/v1/boards/" + dashboardId;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + miroToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        // Parse the JSON response into a DashboardDetails object
+        ResponseEntity<DashboardDetails> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, DashboardDetails.class);
         return response.getBody();
     }
 }

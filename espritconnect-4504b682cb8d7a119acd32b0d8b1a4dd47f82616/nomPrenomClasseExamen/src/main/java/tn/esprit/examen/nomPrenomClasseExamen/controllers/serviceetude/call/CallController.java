@@ -5,6 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 @RequestMapping("/api/calls")
 public class CallController {
     private final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
