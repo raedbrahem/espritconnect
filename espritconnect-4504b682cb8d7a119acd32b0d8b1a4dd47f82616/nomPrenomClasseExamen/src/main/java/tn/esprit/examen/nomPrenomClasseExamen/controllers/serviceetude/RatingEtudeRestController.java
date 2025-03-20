@@ -7,7 +7,7 @@ import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.rating_etude
 import tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude.IRating_etudeService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 @RequiredArgsConstructor
 @RequestMapping("/rating")
 @RestController
