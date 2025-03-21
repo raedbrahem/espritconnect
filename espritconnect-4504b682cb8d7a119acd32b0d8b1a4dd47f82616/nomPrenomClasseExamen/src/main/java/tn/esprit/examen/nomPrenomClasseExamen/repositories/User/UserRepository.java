@@ -1,4 +1,4 @@
-package tn.esprit.examen.nomPrenomClasseExamen.services.User;
+package tn.esprit.examen.nomPrenomClasseExamen.repositories.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;

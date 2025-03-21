@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.UserRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.ServiceEtudeRepository;
-import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserRepository;
 import java.util.List;
 
 @Service
