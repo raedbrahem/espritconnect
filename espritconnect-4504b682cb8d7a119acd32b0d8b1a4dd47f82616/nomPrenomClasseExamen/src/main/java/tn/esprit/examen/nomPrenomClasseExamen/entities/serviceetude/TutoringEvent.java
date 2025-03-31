@@ -44,4 +44,7 @@ public class TutoringEvent implements Serializable {
     @ManyToOne
     @JoinColumn(name = "service_etude_id", nullable = false)
     Service_Etude serviceEtude;
+
+    @Column(nullable = false)
+    float price;
 }

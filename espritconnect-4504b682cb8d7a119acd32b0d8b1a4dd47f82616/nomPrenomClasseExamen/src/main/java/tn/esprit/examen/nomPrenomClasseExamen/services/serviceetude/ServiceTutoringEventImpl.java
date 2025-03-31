@@ -32,4 +32,9 @@ public class ServiceTutoringEventImpl implements IServiceTutoringEvent {
     public List<TutoringEvent> getAllTutoringEvents() {
         return tutoringEventRepository.findAll();
     }
+
+    @Override
+    public TutoringEvent retrieveTutoringEvent(Long id) {
+        return tutoringEventRepository.findById(id).get();
+    }
 }

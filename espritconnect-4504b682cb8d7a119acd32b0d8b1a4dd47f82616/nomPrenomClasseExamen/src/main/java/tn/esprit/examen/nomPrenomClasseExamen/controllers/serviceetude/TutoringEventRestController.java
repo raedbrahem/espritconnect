@@ -15,6 +15,11 @@ public class TutoringEventRestController {
     @Autowired
     private IServiceTutoringEvent tutoringEventService;
 
+    @GetMapping("/retrieve/{id}")
+    public TutoringEvent retrieveTutoringEvent(@PathVariable Long id) {
+        return tutoringEventService.retrieveTutoringEvent(id);
+    }
+
     @PostMapping("/add")
     public TutoringEvent addTutoringEvent(@RequestBody TutoringEvent tutoringEvent) {
         return tutoringEventService.addTutoringEvent(tutoringEvent);
