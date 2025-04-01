@@ -2,43 +2,49 @@ package tn.esprit.examen.nomPrenomClasseExamen.services.Covoiturage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Covoiturage.Paiement;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Covoiturage.*;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.Covoiturage.PaiementRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.Covoiturage.ReservationRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Service
 public class PaiementServiceImpl implements IServicePaiement{
-    private final PaiementRepository paiementRepository;
+    @Autowired
+    private PaiementRepository paiementRepository;
 
     @Autowired
-    public PaiementServiceImpl(PaiementRepository paiementRepository) {
-        this.paiementRepository = paiementRepository;
-    }
+    private ReservationRepository reservationRepository;
 
     @Override
-    public List<Paiement> retrieveAllPaiements() {
-        return paiementRepository.findAll();
-    }
+    public Paiement effectuerPaiement(Long reservationId, double montant, String moyenPaiement) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation non trouvée"));
 
-    @Override
-    public Paiement retrievePaiement(Long id_paiement) {
-        return paiementRepository.findById(id_paiement).orElse(null);
-    }
+        // Créer un objet Paiement
+        Paiement paiement = new Paiement();
+        paiement.setMontant(montant);
+        paiement.setMoyenPaiement(moyenPaiement.equals("CARTEBANCAIRE") ? MoyenPaiement.CARTEBANCAIRE : MoyenPaiement.CASH);
+        paiement.setStatutPaiement(StatutPaiement.EN_ATTENTE);  // Par défaut, le paiement est en attente
+        paiement.setDate_transaction(LocalDateTime.now());
+        paiement.setReservation(reservation);
 
+        // Sauvegarder le paiement dans la base de données
+        paiement = paiementRepository.save(paiement);
+
+        // Mettre à jour l'état de la réservation
+        reservation.setEtat(EtatReservation.CONFIRME); // On peut choisir de changer l'état selon le statut du paiement
+        reservationRepository.save(reservation);
+
+        return paiement;
+    }
     @Override
-    public Paiement addPaiement(Paiement paiement) {
+    public Paiement mettreAJourStatutPaiement(Long paiementId, StatutPaiement statut) {
+        Paiement paiement = paiementRepository.findById(paiementId)
+                .orElseThrow(() -> new IllegalArgumentException("Paiement non trouvé"));
+
+        paiement.setStatutPaiement(statut);
         return paiementRepository.save(paiement);
     }
-
-    @Override
-    public void removePaiement(Long id_paiement) {
-        paiementRepository.deleteById(id_paiement);
-    }
-
-    @Override
-    public Paiement modifyPaiement(Paiement paiement) {
-        return paiementRepository.save(paiement);
-    }
-
 
 }

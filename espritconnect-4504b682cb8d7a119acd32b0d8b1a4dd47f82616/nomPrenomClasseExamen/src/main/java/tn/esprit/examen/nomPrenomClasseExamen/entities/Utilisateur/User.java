@@ -2,7 +2,10 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
+
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,4 +34,6 @@ public class User {
 
     private String statutVerification;
     private String telephone;
+    @ManyToMany
+    private List<Service_Etude> serviceEtudesProvided;
 }

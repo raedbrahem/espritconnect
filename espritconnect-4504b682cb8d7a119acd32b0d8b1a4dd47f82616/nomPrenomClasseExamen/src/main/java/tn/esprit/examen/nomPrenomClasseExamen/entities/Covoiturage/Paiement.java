@@ -18,14 +18,23 @@ public class Paiement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_paiement;
+
+    private double montant;
+
     @Enumerated(EnumType.STRING)
     private MoyenPaiement moyenPaiement;
+
+    @Enumerated(EnumType.STRING)
+    private StatutPaiement statutPaiement;
+
     private LocalDateTime date_transaction;
+
     @OneToOne
-    @JoinColumn(name = "id_trajet", nullable = false)
-    private Trajet trajet;
+    @JoinColumn(name = "reservation_id", nullable = false)
+    private Reservation reservation;
+
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
     private User user;
 
 }
