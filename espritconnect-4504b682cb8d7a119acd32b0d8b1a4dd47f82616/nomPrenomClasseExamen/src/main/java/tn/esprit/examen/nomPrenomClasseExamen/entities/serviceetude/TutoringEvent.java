@@ -35,6 +35,7 @@ public class TutoringEvent implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
+    @JsonIgnore
     User tutor;
 
     @ManyToOne
