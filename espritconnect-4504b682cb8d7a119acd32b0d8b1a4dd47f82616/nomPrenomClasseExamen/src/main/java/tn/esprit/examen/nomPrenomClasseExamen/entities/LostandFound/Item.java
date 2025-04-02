@@ -21,22 +21,14 @@ public class Item {
     @JoinColumn(name = "proprietaire_id", nullable = false)
     User proprietaire;
 
-    @Column(nullable = false)
     String item_name;
-
-    @Column(nullable = false)
+    String item_image;
     String description;
-
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    CategoryItem category;
     String lieuPerdu;
-
-    @Column(nullable = false)
     LocalDate datePerdu;
-
-    @Column(nullable = false)
     boolean retrouve;
-
-    @Column(nullable = false)
     LocalDateTime datePublication_item;
 }
 

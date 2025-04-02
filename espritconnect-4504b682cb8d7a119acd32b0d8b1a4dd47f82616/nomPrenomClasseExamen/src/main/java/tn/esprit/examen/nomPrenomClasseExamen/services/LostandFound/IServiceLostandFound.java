@@ -11,6 +11,4 @@ public interface IServiceLostandFound {
     Item addLostItem(Item lostItem);
     void removeLostItem(Long id);
     Item modifyLostItem(Item lostItem);
-    List<Item> findLostItemsByLocation(String location);
-
 }

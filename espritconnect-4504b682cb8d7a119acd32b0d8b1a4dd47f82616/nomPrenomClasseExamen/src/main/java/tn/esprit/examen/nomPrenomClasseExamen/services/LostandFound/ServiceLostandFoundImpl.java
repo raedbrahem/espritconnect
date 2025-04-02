@@ -40,10 +40,6 @@ public class ServiceLostandFoundImpl implements IServiceLostandFound{
         return lostItemRepository.save(lostItem);
     }
 
-    @Override
-    public List<Item> findLostItemsByLocation(String location) {
-        return lostItemRepository.findByLieuPerdu(location);
-    }
 
 }
 
