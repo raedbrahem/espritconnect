@@ -3,9 +3,11 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -50,6 +52,26 @@ public class User {
     @ManyToMany(mappedBy = "followees")
     @JsonIgnore
     private Set<User> followers = new HashSet<>();
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Service_Etude> serviceEtudes;
 
+    // New ManyToMany relationship with Service_Etude
+    @ManyToMany
+    @JoinTable(
+            name = "user_service_etude",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_etude_id")
+    )
+    @JsonIgnore
+    private List<Service_Etude> serviceEtudesProvided;
+
+    public List<Service_Etude> getServiceEtudesProvided() {
+        return serviceEtudesProvided;
+    }
+
+    public void setServiceEtudesProvided(List<Service_Etude> serviceEtudesProvided) {
+        this.serviceEtudesProvided = serviceEtudesProvided;
+    }
 
 }
