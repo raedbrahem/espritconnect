@@ -3,6 +3,10 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Answer;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Notificationn;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Question;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Vote;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.Date;
@@ -13,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
+
 public class User {
 
     @Id
@@ -73,5 +78,15 @@ public class User {
     public void setServiceEtudesProvided(List<Service_Etude> serviceEtudesProvided) {
         this.serviceEtudesProvided = serviceEtudesProvided;
     }
+    ////foued///////////
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
+    public Set<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public Set<Answer> answers;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public Set<Notificationn> notifications;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public Set<Vote> votes;
 
 }
