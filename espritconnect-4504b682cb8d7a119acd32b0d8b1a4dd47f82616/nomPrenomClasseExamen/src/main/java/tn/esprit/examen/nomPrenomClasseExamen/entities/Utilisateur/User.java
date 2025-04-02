@@ -1,11 +1,12 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +35,21 @@ public class User {
 
     private String statutVerification;
     private String telephone;
+
+    // Les utilisateurs que cet utilisateur suit
     @ManyToMany
-    private List<Service_Etude> serviceEtudesProvided;
+    @JoinTable(
+            name = "user_follow",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "followee_id")
+    )
+    @JsonIgnore
+    private Set<User> followees = new HashSet<>();
+
+    // Les utilisateurs qui suivent cet utilisateur
+    @ManyToMany(mappedBy = "followees")
+    @JsonIgnore
+    private Set<User> followers = new HashSet<>();
+
+
 }

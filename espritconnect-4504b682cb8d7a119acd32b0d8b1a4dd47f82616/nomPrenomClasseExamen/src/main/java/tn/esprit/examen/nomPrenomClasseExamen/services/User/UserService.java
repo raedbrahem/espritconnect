@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.Role;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.UserRepository;
@@ -14,6 +15,7 @@ import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.UserRepository;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -84,5 +86,40 @@ public class UserService implements UserDetailsService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+    // --- Fonctionnalités d'abonnement ---
+
+    // Suivre un utilisateur
+    @Transactional
+    public void followUser(Long followerId, Long followeeId) {
+        User follower = findById(followerId);
+        User followee = findById(followeeId);
+        // La collection followees est initialisée dans une session transactionnelle
+        follower.getFollowees().add(followee);
+        userRepository.save(follower);
+    }
+
+    // Se désabonner d'un utilisateur
+    @Transactional
+    public void unfollowUser(Long followerId, Long followeeId) {
+        User follower = findById(followerId);
+        User followee = findById(followeeId);
+        follower.getFollowees().remove(followee);
+        userRepository.save(follower);
+    }
+
+    // Récupérer les abonnés (followers) d'un utilisateur
+    @Transactional(readOnly = true)
+    public Set<User> getFollowers(Long userId) {
+        User user = findById(userId);
+        return user.getFollowers();
+    }
+
+    // Récupérer les abonnements (followees) d'un utilisateur
+    @Transactional(readOnly = true)
+    public Set<User> getFollowees(Long userId) {
+        User user = findById(userId);
+        return user.getFollowees();
     }
 }
