@@ -1,5 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 
@@ -19,11 +20,12 @@ public class Notificationn {
     private Date createdAt;
 
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JsonIgnore
     User user;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     Answer answer;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     Question question;
 
     public Notificationn(Long id, String content, NotificationType type, Date createdAt, User user, Answer answer, Question question) {

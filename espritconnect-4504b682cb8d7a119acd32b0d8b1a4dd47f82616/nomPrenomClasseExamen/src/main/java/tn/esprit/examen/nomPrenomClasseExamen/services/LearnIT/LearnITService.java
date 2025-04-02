@@ -1,6 +1,9 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.LearnIT;
 
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +16,11 @@ import tn.esprit.examen.nomPrenomClasseExamen.repositories.LearnIT.QuestionRepos
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.LearnIT.VoteRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class LearnITService implements ILearnITService {
@@ -44,6 +49,13 @@ private UserRepository userRepository;
     public Question GetQuestionById(Long id) {
         return questionRepository.findById(id).orElse(null);
     }
+
+    @Override
+
+        public List<Question> getQuestionsByTag(Tag tag) {
+            return this.questionRepository.findByTag(tag);
+        }
+
 
     public Question addQuestion(Question question) {
         // Récupérer l'utilisateur authentifié à partir du contexte de sécurité
@@ -86,26 +98,33 @@ private UserRepository userRepository;
     }
 
     @Override
-    public Answer addAnswer(Answer answer, Long userId, Long questionId) {
-        // Récupérer l'utilisateur
-        User user = userRepository.findById(userId)
+    public Answer addAnswer(Answer answer, Long questionId) {
+        // 🔹 Récupérer l'utilisateur authentifié à partir du contexte de sécurité
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = userDetails.getUsername(); // Utilisation de l'email comme identifiant unique
+
+        // 🔹 Récupérer l'utilisateur depuis la base de données
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Récupérer la question
+        // 🔹 Récupérer la question
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
 
-        // Associer l'utilisateur et la question à la réponse
+        // 🔹 Associer l'utilisateur et la question à la réponse
         answer.setUser(user);
         answer.setQuestion(question);
         answer.setCreatedAt(new Date());
 
-        // Sauvegarder la réponse
-        Answer savedanswer =answerRepository.save(answer);
+        // 🔹 Sauvegarder la réponse
+        Answer savedAnswer = answerRepository.save(answer);
+
         // ✅ Ajouter une notification après l'ajout de la réponse
-        createNewAnswerNotification(userId, questionId, savedanswer.getId());
-        return savedanswer;
+        createNewAnswerNotification( questionId, savedAnswer.getId());
+
+        return savedAnswer;
     }
+
 
     @Override
     public void removeAnswer(Long id) {
@@ -129,20 +148,34 @@ private UserRepository userRepository;
         voteRepository.deleteById(id);
     }
 
-    public Vote addOrUpdateVote(Long userId, Long questionId, Long value) {
-        User user = userRepository.findById(userId)
+
+
+
+    @Transactional
+    public Vote addOrUpdateVote(Long questionId, Long value) {
+        // 1. Récupération de l'utilisateur depuis le contexte de sécurité
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        // 2. Recherche de l'utilisateur par email (ou autre identifiant selon votre implémentation)
+        User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // 3. Récupération de la question
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
 
+        // 4. Recherche du vote existant
         Optional<Vote> existingVote = voteRepository.findByUserAndQuestion(user, question);
 
         if (existingVote.isPresent()) {
+            // Mise à jour du vote existant
             Vote vote = existingVote.get();
             vote.setValue(Math.toIntExact(value));
+            vote.setCreatedAt(new Date()); // Ajout de la date de mise à jour
             return voteRepository.save(vote);
         } else {
+            // Création d'un nouveau vote
             Vote vote = new Vote();
             vote.setValue(Math.toIntExact(value));
             vote.setUser(user);
@@ -197,20 +230,19 @@ private UserRepository userRepository;
     public Notificationn modifyNotification(Notificationn notification) {
         return notificationRepository.save(notification);
     }
-    public Notificationn createNewAnswerNotification(Long userId, Long questionId, Long answerId) {
-        // Récupérer l'utilisateur
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Récupérer la question
+    public Notificationn createNewAnswerNotification(Long questionId, Long answerId) {
+        // 🔹 Récupérer la question
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
 
-        // Récupérer la réponse
+        // 🔹 Récupérer l'utilisateur qui a posé la question
+        User user = question.getUser();
+
+        // 🔹 Récupérer la réponse
         Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new RuntimeException("Answer not found"));
 
-        // Créer la notification
+        // 🔹 Créer la notification
         Notificationn notification = new Notificationn();
         notification.setContent("Une nouvelle réponse a été ajoutée à votre question : " + question.getTitle());
         notification.setType(NotificationType.NEW_ANSWER);
@@ -219,7 +251,7 @@ private UserRepository userRepository;
         notification.setAnswer(answer);
         notification.setCreatedAt(new Date());
 
-        // Sauvegarder la notification
+        // 🔹 Sauvegarder la notification
         Notificationn savedNotification = notificationRepository.save(notification);
 
         // ✅ Vérifier que `emailService` n'est pas `null`

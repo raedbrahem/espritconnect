@@ -1,5 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 
@@ -17,8 +18,10 @@ public class Answer {
     Date createdAt;
 
     @ManyToOne
+    @JsonIgnore
     User user;
     @ManyToOne
+    @JsonIgnore
     Question question;
     @OneToMany( cascade = CascadeType.ALL ,mappedBy = "answer")
     private Set<Vote> votes;

@@ -83,8 +83,10 @@ public class User {
     @JsonIgnore
     public Set<Question> questions;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     public Set<Answer> answers;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     public Set<Notificationn> notifications;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     public Set<Vote> votes;

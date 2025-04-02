@@ -14,10 +14,9 @@ public class AnswerRestController {
     ILearnITService learnITService;
 
     // Créer une réponse
-    @PostMapping("/user/{userId}/question/{questionId}")
-    public Answer addAnswer(@RequestBody Answer answer, @PathVariable Long userId, @PathVariable Long questionId) {
-        Answer createdAnswer = learnITService.addAnswer(answer, userId, questionId);
-        return createdAnswer;
+    @PostMapping("/question/{questionId}/answer")
+    public Answer addAnswer(@RequestBody Answer answer, @PathVariable Long questionId) {
+        return learnITService.addAnswer(answer, questionId);
     }
 
     @PutMapping("/{id}")

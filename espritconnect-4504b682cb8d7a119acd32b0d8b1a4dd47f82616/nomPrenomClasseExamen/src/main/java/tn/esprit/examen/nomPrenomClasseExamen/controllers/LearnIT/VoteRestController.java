@@ -15,12 +15,12 @@ public class VoteRestController {
     ILearnITService learnITService;
 
     // Ajouter ou mettre à jour un vote
-    @PostMapping("/user/{userId}/question/{questionId}")
+    @PostMapping("/question/{questionId}")
     public Vote addOrUpdateVote(
-            @PathVariable Long userId,
+
             @PathVariable Long questionId,
             @RequestParam Long value) { // 1 pour upvote, -1 pour downvote
-        return learnITService.addOrUpdateVote(userId, questionId, value);
+        return learnITService.addOrUpdateVote( questionId, value);
     }
 
     @GetMapping("/question/{questionId}/upvotes")

@@ -20,11 +20,13 @@ public class Question {
     Date createdAt;
 
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     Tag tag;
     @ManyToOne
     @JsonIgnore
     User user;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    @JsonIgnore
     public Set<Answer> answers;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
     public Set<Notificationn> notifications;

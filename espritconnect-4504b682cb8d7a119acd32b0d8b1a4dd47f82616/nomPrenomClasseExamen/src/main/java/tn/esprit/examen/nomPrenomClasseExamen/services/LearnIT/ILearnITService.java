@@ -1,9 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.LearnIT;
 
-import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Answer;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Notificationn;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Question;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Vote;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.*;
 
 import java.util.List;
 
@@ -11,19 +8,20 @@ public interface ILearnITService {
     //////Questions services/////
     List<Question> getAllQuestion();
     Question GetQuestionById(Long id);
+    List<Question> getQuestionsByTag(Tag tag);
     Question addQuestion(Question question);
     void removeQuestion(Long id);
     Question modifyQuestion(Question question);
     ///////////Answers services////////
     List<Answer> GetAllAnswer();
     Answer GetAnswerById(Long id);
-    Answer addAnswer(Answer answer, Long userId, Long questionId);
+    Answer addAnswer(Answer answer, Long questionId);
     void removeAnswer(Long id);
     Answer modifyAnswer(Long id, Answer updatedAnswer);
     ///////////Votes services////////
 
     void removeVote(Long id);
-    public Vote addOrUpdateVote(Long userId, Long questionId, Long value);
+    public Vote addOrUpdateVote( Long questionId, Long value);
     public int getUpvotesForQuestion(Long questionId);
     public int getDownvotesForQuestion(Long questionId);
     ///////Notifications services//////
@@ -36,5 +34,5 @@ public interface ILearnITService {
     int getTotalScoreForQuestion(Long questionId);
 
     public Notificationn createVoteNotification(Long userId, Long questionId);
-    public Notificationn createNewAnswerNotification(Long userId, Long questionId, Long idanswer);
+    public Notificationn createNewAnswerNotification(Long questionId, Long answerId);
 }

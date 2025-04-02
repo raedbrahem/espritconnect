@@ -3,10 +3,10 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt;
 import jakarta.persistence.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-
 public class Vote {
 
 @Id
@@ -77,4 +77,6 @@ public class Vote {
     public void setQuestion(Question question) {
         this.question = question;
     }
+
+
 }

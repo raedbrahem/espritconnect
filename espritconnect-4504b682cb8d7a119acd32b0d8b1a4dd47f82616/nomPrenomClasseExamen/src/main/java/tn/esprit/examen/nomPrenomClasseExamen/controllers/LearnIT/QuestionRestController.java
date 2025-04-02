@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Question;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Tag;
 import tn.esprit.examen.nomPrenomClasseExamen.services.LearnIT.ILearnITService;
 
 import java.util.List;
@@ -43,4 +44,9 @@ public class QuestionRestController {
         Question Question = learnITService.modifyQuestion(q);
         return Question;
     }
+    @GetMapping({"/tag/{tag}"})
+    public List<Question> getQuestionsByTag(@PathVariable Tag tag) {
+        return this.learnITService.getQuestionsByTag(tag);
+    }
+    ////////////////////////////Answers services////////////////////////
 }

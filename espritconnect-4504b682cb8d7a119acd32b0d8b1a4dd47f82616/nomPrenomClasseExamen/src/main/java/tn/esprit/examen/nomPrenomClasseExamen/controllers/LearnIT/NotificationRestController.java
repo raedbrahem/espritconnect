@@ -20,11 +20,11 @@ public class NotificationRestController {
 
     @PostMapping("/new-answer-notification")
     public ResponseEntity<Notificationn> createNewAnswerNotification(
-            @RequestParam Long userId,
+
             @RequestParam Long questionId,
             @RequestParam Long answerId) {
 
-        Notificationn notification = notificationService.createNewAnswerNotification(userId, questionId, answerId);
+        Notificationn notification = notificationService.createNewAnswerNotification(questionId, answerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(notification);
     }
     @PostMapping("/new-vote-notification")
