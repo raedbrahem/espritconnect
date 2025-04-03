@@ -44,4 +44,10 @@ public class RatingEtudeRestController {
     public rating_etude retrieveRating(@PathVariable Long id) {
         return ratingEtudeService.retrieverating(id);
     }
+
+
+    @GetMapping("/by-service-etude/{serviceEtudeId}")
+    public List<rating_etude> getRatingsByServiceEtudeId(@PathVariable Long serviceEtudeId) {
+        return ratingEtudeService.getRatingsByServiceEtudeId(serviceEtudeId);
+    }
 }

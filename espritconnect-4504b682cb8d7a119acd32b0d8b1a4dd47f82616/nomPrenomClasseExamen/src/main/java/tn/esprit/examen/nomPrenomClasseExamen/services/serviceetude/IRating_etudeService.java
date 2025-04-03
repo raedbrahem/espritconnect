@@ -10,4 +10,6 @@ public interface IRating_etudeService {
     rating_etude updaterating(rating_etude commentaire);
     List<rating_etude> getAllratings();
     rating_etude retrieverating(Long id);
+    List<rating_etude> getRatingsByServiceEtudeId(Long serviceEtudeId); // Add this method
+
 }

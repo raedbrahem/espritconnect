@@ -38,4 +38,9 @@ public class CommentaireServiceImpl implements ICommentaireService {
         return commentaireRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Commentaire not found with ID: " + id));
     }
+
+    @Override
+    public List<Commentaire> getCommentairesByServiceEtudeId(Long serviceEtudeId) {
+        return commentaireRepository.findByServiceEtudeId(serviceEtudeId);
+    }
 }

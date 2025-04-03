@@ -43,4 +43,10 @@ public class CommentaireRestController {
     public Commentaire retrieveCommentaire(@PathVariable Long id) {
         return serviceCommentaire.retrieveCommentaire(id);
     }
+
+
+    @GetMapping("/by-service-etude/{serviceEtudeId}")
+    public List<Commentaire> getCommentairesByServiceEtudeId(@PathVariable Long serviceEtudeId) {
+        return serviceCommentaire.getCommentairesByServiceEtudeId(serviceEtudeId);
+    }
 }
