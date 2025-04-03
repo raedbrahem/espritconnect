@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Autoriser ces endpoints sans authentification
-                        .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password").permitAll()
+                        .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password", "/swagger-ui/index.html#").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

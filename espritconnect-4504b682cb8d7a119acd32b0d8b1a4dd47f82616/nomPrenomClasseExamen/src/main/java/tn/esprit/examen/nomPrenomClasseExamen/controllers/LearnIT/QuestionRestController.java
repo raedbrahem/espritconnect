@@ -3,6 +3,7 @@ package tn.esprit.examen.nomPrenomClasseExamen.controllers.LearnIT;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Question;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Tag;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/question")
 @AllArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class QuestionRestController {
     @Autowired
     ILearnITService learnITService;
@@ -20,15 +22,14 @@ public class QuestionRestController {
 
 
     @GetMapping("/Get-all-Questions")
-    public List<Question> getQuestions() {
-        List<Question> listQuestions = learnITService.getAllQuestion();
-        return listQuestions;
+    public ResponseEntity<List<Question>> getQuestions() {
+        return ResponseEntity.ok(learnITService.getAllQuestion());
     }
 
     @GetMapping("/Get-Question/{Question-id}")
-    public Question GetQuestion(@PathVariable("Question-id") Long questionID) {
+    public ResponseEntity GetQuestion(@PathVariable("Question-id") Long questionID) {
         Question Question = learnITService.GetQuestionById(questionID);
-        return Question;
+        return ResponseEntity.ok(Question);
     }
     @PostMapping("/add-Question")
     public Question addQuestion(@RequestBody Question question) {

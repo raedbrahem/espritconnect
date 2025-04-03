@@ -29,7 +29,11 @@ public class Question {
     @JsonIgnore
     public Set<Answer> answers;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    @JsonIgnore
     public Set<Notificationn> notifications;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    @JsonIgnore
+    public Set<Vote> votes;
 
     public Question(int id, String title, String content, String screenshot, Date createdAt, Tag tag, User user, Set<Answer> answers, Set<Notificationn> notifications) {
         this.id = id;
