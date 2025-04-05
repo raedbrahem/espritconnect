@@ -21,18 +21,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenFilter jwtTokenFilter) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // Active la config CORS
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Autoriser ces endpoints sans authentification
                         .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password").permitAll()
+                        .requestMatchers("/api/users/profile").authenticated()
+                        .requestMatchers("/api/users/profile/update").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

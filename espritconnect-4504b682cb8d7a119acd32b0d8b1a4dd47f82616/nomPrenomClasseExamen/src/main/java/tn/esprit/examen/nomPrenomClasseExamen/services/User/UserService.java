@@ -1,5 +1,8 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,14 +11,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Answer;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Notificationn;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Question;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Vote;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.Role;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.UserRepository;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -122,4 +126,23 @@ public class UserService implements UserDetailsService {
         User user = findById(userId);
         return user.getFollowees();
     }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+    // Dans UserService.java
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    ////foued///////////
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
+    public Set<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public Set<Answer> answers;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public Set<Notificationn> notifications;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    public Set<Vote> votes;
 }
