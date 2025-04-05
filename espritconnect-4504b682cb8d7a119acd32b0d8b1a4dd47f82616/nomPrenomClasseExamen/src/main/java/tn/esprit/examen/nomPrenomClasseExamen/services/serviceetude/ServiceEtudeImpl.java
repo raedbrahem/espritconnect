@@ -68,4 +68,17 @@ public class ServiceEtudeImpl implements IServiceEtude {
         userRepository.save(user);
         serviceEtudeRepository.save(serviceEtude);
     }
+
+    @Override
+    public boolean isUserAssignedToService(Long userId, Long serviceId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        Service_Etude service = serviceEtudeRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + serviceId));
+
+        // Check both sides of the relationship
+        return user.getServiceEtudesProvided().contains(service) ||
+                service.getClients().contains(user);
+    }
 }

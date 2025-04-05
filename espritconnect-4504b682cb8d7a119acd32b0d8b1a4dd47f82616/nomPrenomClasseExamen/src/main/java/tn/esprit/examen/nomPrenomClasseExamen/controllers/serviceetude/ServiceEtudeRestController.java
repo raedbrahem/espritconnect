@@ -54,4 +54,11 @@ public class ServiceEtudeRestController {
     public void unassignProjetToService(@PathVariable Long userId, @PathVariable Long serviceId) {
         serviceEtudeService.unassignProjetToService(userId, serviceId);
     }
+
+    @GetMapping("/is-assigned/{userId}/{serviceId}")
+    public boolean isUserAssignedToService(
+            @PathVariable Long userId,
+            @PathVariable Long serviceId) {
+        return serviceEtudeService.isUserAssignedToService(userId, serviceId);
+    }
 }
