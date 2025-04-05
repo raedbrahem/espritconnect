@@ -17,17 +17,17 @@ public class StatisticsController {
     private StatisticsService statisticsService;
 
     @GetMapping("/average-rating-per-tutor")
-    public Map<Long, Double> getAverageRatingPerTutor() {
+    public Map<String, Double> getAverageRatingPerTutor() {
         return statisticsService.getAverageRatingPerTutor();
     }
 
     @GetMapping("/number-of-sessions-per-tutor")
-    public Map<Long, Long> getNumberOfSessionsPerTutor() {
+    public Map<String, Long> getNumberOfSessionsPerTutor() {
         return statisticsService.getNumberOfSessionsPerTutor();
     }
 
     @GetMapping("/total-hours-per-tutor")
-    public Map<Long, Double> getTotalHoursPerTutor() {
+    public Map<String, Double> getTotalHoursPerTutor() {
         return statisticsService.getTotalHoursPerTutor();
     }
 

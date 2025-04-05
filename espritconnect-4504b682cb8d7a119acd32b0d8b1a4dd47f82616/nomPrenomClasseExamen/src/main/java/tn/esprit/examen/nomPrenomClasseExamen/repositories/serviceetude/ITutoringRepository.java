@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface ITutoringRepository extends JpaRepository<TutoringEvent, Long> {
-
-    @Query(value = "SELECT t.tutor_id AS tutorId, COUNT(t.id) AS sessionCount " +
-            "FROM tutoring_event t GROUP BY t.tutor_id", nativeQuery = true)
+    @Query("SELECT CONCAT(t.tutor.nom, ' ', t.tutor.prenom) AS tutorName, " +
+            "COUNT(t.id) AS sessionCount " +
+            "FROM TutoringEvent t GROUP BY t.tutor.nom, t.tutor.prenom")
     List<Object[]> countSessionsByTutor();
 
-    @Query(value = "SELECT t.tutor_id AS tutorId, " +
-            "SUM(TIMESTAMPDIFF(HOUR, t.start_time, t.end_time)) AS totalHours " +
-            "FROM tutoring_event t GROUP BY t.tutor_id", nativeQuery = true)
+    @Query("SELECT CONCAT(t.tutor.nom, ' ', t.tutor.prenom) AS tutorName, " +
+            "SUM(FUNCTION('TIMESTAMPDIFF', HOUR, t.startTime, t.endTime)) AS totalHours " +
+            "FROM TutoringEvent t GROUP BY t.tutor.nom, t.tutor.prenom")
     List<Object[]> sumTutoringHoursByTutor();
 
     @Query(value = "SELECT HOUR(t.start_time) AS hour, COUNT(*) AS sessionCount " +
