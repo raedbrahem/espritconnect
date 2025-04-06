@@ -189,12 +189,32 @@
             padding: 20px;
         }
     }
+    /* Optional styling for the button */
+    .dashboard-btn {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .dashboard-btn:hover {
+        background-color: #45a049;
+    }
     </style><link rel="stylesheet" href="styles.8296f4a196814c99.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.8296f4a196814c99.css"></noscript></head>
 <body class="defult-home">
 <div id="video-container" class="video-container">
     <app-root></app-root>
 </div>
-
+<div>
+<a href="http://localhost:8089/miro/dashboard" class="dashboard-btn">
+    Open Shared WhiteBoard
+</a>
+</div>
 <!-- Chat Section - now properly below the video call -->
 <div id="chat-container" class="chat-container">
     <div id="username-page">
