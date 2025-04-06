@@ -1,6 +1,7 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.LearnIt.Answer;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
-
+@JsonIgnoreProperties({"questions", "answers", "notifications", "votes", "followees", "followers", "serviceEtudes", "serviceEtudesProvided"})
 public class User {
 
     @Id
@@ -43,8 +44,8 @@ public class User {
     private String statutVerification;
     private String telephone;
 
-    // Les utilisateurs que cet utilisateur suit
-    @ManyToMany
+    // The users that this user follows
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_follow",
             joinColumns = @JoinColumn(name = "follower_id"),
@@ -53,10 +54,12 @@ public class User {
     @JsonIgnore
     private Set<User> followees = new HashSet<>();
 
-    // Les utilisateurs qui suivent cet utilisateur
+
+    // The users who follow this user
     @ManyToMany(mappedBy = "followees")
     @JsonIgnore
     private Set<User> followers = new HashSet<>();
+
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Service_Etude> serviceEtudes;
@@ -71,22 +74,20 @@ public class User {
     @JsonIgnore
     private List<Service_Etude> serviceEtudesProvided;
 
-    public List<Service_Etude> getServiceEtudesProvided() {
-        return serviceEtudesProvided;
-    }
-
-    public void setServiceEtudesProvided(List<Service_Etude> serviceEtudesProvided) {
-        this.serviceEtudesProvided = serviceEtudesProvided;
-    }
-    ////foued///////////
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     public Set<Question> questions;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     public Set<Answer> answers;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     public Set<Notificationn> notifications;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     public Set<Vote> votes;
 
 }

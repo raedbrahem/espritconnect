@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+    // Find user by email (returns Optional to handle the case when no user is found)
     Optional<User> findByEmail(String email);
 
-    // Recherche sur le nom et l'email
+    // Search users by name or email, ignoring case (returns a list of matching users)
     List<User> findByNomContainingIgnoreCaseOrEmailContainingIgnoreCase(String nomKeyword, String emailKeyword);
 }

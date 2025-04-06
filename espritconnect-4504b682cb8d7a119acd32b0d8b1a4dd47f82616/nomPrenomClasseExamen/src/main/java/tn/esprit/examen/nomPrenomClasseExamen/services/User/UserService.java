@@ -16,12 +16,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
+@Transactional
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -50,6 +52,7 @@ public class UserService implements UserDetailsService {
         user.setRole(Role.USER);
         return userRepository.save(user);
     }
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -99,6 +102,10 @@ public class UserService implements UserDetailsService {
         follower.getFollowees().add(followee);
         userRepository.save(follower);
     }
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email)); // Or return null if you prefer
+    }
 
     // Se désabonner d'un utilisateur
     @Transactional
@@ -109,12 +116,20 @@ public class UserService implements UserDetailsService {
         userRepository.save(follower);
     }
 
+
     // Récupérer les abonnés (followers) d'un utilisateur
     @Transactional(readOnly = true)
     public Set<User> getFollowers(Long userId) {
         User user = findById(userId);
         return user.getFollowers();
     }
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);  // If no user is found, return null
+    }
+
+
+
+
 
     // Récupérer les abonnements (followees) d'un utilisateur
     @Transactional(readOnly = true)
