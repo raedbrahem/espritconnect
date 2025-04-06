@@ -26,9 +26,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Autoriser ces endpoints sans authentification
-                        .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password").permitAll()
+                        .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password", "/uploads/**").permitAll()
                         .requestMatchers("/api/users/profile").authenticated()
                         .requestMatchers("/api/users/profile/update").authenticated()
+                        .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
