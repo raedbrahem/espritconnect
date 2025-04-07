@@ -54,4 +54,15 @@ public class UserController {
         List<User> users = userService.searchUsers(keyword);
         return ResponseEntity.ok(users);
     }
+    // Accessible à tout le monde
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+
 }
