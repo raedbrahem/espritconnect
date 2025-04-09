@@ -258,31 +258,6 @@ body {
 <div id="video-container" class="video-container">
     <app-root></app-root>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-<h1>Speech Transcription</h1>
-<button onclick="startTranscription()">Start Transcription</button>
-<div id="output" style="white-space: pre-wrap; margin-top: 20px;"></div>
-
-<script>
-    function startTranscription() {
-        const outputDiv = document.getElementById('output');
-        outputDiv.innerHTML = 'Listening...';
-
-        // Call the API endpoint
-        axios.get('/api/speech/transcribe')
-            .then(response => {
-                let outputText = '';
-                response.data.forEach(line => {
-                    outputText += line + '\n';
-                });
-                outputDiv.innerHTML = outputText;
-            })
-            .catch(error => {
-                outputDiv.innerHTML = 'Error: ' + error.message;
-            });
-    }
-</script>
 <div class="dashboard-btn-container">
     <a href="http://localhost:8089/miro/dashboard" class="dashboard-btn">
         Open Shared WhiteBoard
@@ -376,5 +351,5 @@ body {
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-<script src="runtime.1d901eb874481f9d.js" type="module"></script><script src="polyfills.515eac1af4c95fe3.js" type="module"></script><script src="scripts.1ac6d0d02f230370.js" defer></script><script src="main.9c392aabc8afaa7f.js" type="module"></script></body>
+<script src="runtime.1d901eb874481f9d.js" type="module"></script><script src="polyfills.515eac1af4c95fe3.js" type="module"></script><script src="scripts.1ac6d0d02f230370.js" defer></script><script src="main.3a96b7c26d7579cb.js" type="module"></script></body>
 </html>
