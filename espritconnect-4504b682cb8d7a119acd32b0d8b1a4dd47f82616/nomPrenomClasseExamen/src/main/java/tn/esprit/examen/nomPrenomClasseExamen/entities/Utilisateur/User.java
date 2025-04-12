@@ -38,20 +38,8 @@ public class User {
     private String statutVerification;
     private String telephone;
 
-    // Les utilisateurs que cet utilisateur suit
-    @ManyToMany
-    @JoinTable(
-            name = "user_follow",
-            joinColumns = @JoinColumn(name = "follower_id"),
-            inverseJoinColumns = @JoinColumn(name = "followee_id")
-    )
-    @JsonIgnore
-    private Set<User> followees = new HashSet<>();
 
-    // Les utilisateurs qui suivent cet utilisateur
-    @ManyToMany(mappedBy = "followees")
-    @JsonIgnore
-    private Set<User> followers = new HashSet<>();
+
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Service_Etude> serviceEtudes;

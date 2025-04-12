@@ -27,10 +27,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Autoriser ces endpoints sans authentification
                         .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password", "/uploads/**").permitAll()
-                        .requestMatchers("/api/users/profile").authenticated()
-                        .requestMatchers("/api/users/profile/update").authenticated()
-                        .requestMatchers("/api/users/**").authenticated()
+
+                        // Authentification requise
+                        .requestMatchers("/api/users/profile", "/api/users/profile/update", "/api/users/email/**", "/api/users/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // 🔥 Autoriser follow/unfollow/is-following
+                        .requestMatchers(
+                                "/api/follow/**",
+                                "/api/unfollow/**",
+                                "/api/is-following/**",
+                                "/api/users/**/followers",
+                                "/api/users/**/followees",
+                                "/api/users/**/followers-count",
+                                "/api/users/**/followees-count"
+                        ).authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

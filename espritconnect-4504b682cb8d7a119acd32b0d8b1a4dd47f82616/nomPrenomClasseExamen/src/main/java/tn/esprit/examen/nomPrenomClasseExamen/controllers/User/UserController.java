@@ -32,7 +32,6 @@ public class UserController {
         user.setAdresse(request.getAdresse());
         user.setPhotoProfil(request.getPhotoProfil());
         user.setCarteEtudiant(request.getCarteEtudiant());
-        user.setRole(request.getRole() != null ? request.getRole() : Role.USER); // Rôle par défaut : USER si non spécifié
 
         User savedUser = userService.registerUser(user);
         return ResponseEntity.ok(savedUser);
@@ -62,6 +61,12 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user);
+    }
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        return userService.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 

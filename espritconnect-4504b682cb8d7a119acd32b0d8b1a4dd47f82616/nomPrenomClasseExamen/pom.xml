@@ -15,6 +15,7 @@
     <description>nomPrenomClasseExamen</description>
     <properties>
         <java.version>17</java.version>
+
     </properties>
     <dependencies>
         <dependency>
