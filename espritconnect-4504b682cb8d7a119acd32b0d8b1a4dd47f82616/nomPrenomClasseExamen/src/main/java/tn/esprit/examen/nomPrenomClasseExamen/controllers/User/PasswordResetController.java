@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.examen.nomPrenomClasseExamen.services.User.PasswordResetService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -23,18 +24,25 @@ public class PasswordResetController {
 
     // Endpoint pour déclencher l'envoi du lien ou du SMS de réinitialisation
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String channel = request.get("channel"); // "email" ou "sms"
 
+        String message;
         if ("sms".equalsIgnoreCase(channel)) {
             passwordResetService.createPasswordResetTokenForSms(email);
-            return ResponseEntity.ok("Un lien de réinitialisation a été envoyé par SMS.");
+            message = "Un lien de réinitialisation a été envoyé par SMS.";
         } else {
             passwordResetService.createPasswordResetTokenForEmail(email);
-            return ResponseEntity.ok("Un lien de réinitialisation a été envoyé à votre email.");
+            message = "Un lien de réinitialisation a été envoyé à votre email.";
         }
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+
+        return ResponseEntity.ok(response);
     }
+
 
     // Endpoint pour réinitialiser le mot de passe
     @PostMapping("/reset-password")
@@ -44,4 +52,5 @@ public class PasswordResetController {
         passwordResetService.resetPassword(token, newPassword);
         return ResponseEntity.ok("Le mot de passe a été réinitialisé avec succès.");
     }
+
 }
