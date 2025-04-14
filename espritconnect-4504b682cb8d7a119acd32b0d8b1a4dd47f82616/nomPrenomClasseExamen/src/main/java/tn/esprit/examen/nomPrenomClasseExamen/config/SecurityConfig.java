@@ -1,5 +1,8 @@
 package tn.esprit.examen.nomPrenomClasseExamen.config;
-
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,10 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserService;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    public SecurityConfig(OAuth2SuccessHandler oAuth2SuccessHandler) {
+        this.oAuth2SuccessHandler = oAuth2SuccessHandler;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenFilter jwtTokenFilter) throws Exception {
@@ -25,25 +33,28 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Autoriser ces endpoints sans authentification
-                        .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password", "/uploads/**").permitAll()
-
-                        // Authentification requise
+                        .requestMatchers(
+                                "/api/register", "/api/login", "/api/forgot-password", "/api/reset-password",
+                                "/uploads/**", "/api/oauth2/me"
+                        ).permitAll()
                         .requestMatchers("/api/users/profile", "/api/users/profile/update", "/api/users/email/**", "/api/users/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-
-                        // 🔥 Autoriser follow/unfollow/is-following
                         .requestMatchers(
                                 "/api/follow/**",
                                 "/api/unfollow/**",
                                 "/api/is-following/**",
-                                "/api/users/**/followers",
-                                "/api/users/**/followees",
-                                "/api/users/**/followers-count",
-                                "/api/users/**/followees-count"
+                                "/api/users/*/followers",
+                                "/api/users/*/followees",
+                                "/api/users/*/followers-count",
+                                "/api/users/*/followees-count"
                         ).authenticated()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2SuccessHandler)
+                )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -60,5 +71,20 @@ public class SecurityConfig {
     @Bean
     public JwtTokenFilter jwtTokenFilter(UserService userService) {
         return new JwtTokenFilter(userService);
+    }
+
+
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:4200"); // autoriser Angular
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

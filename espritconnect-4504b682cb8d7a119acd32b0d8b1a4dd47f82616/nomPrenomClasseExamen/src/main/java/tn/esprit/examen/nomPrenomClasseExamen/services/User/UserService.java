@@ -2,13 +2,16 @@ package tn.esprit.examen.nomPrenomClasseExamen.services.User;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import tn.esprit.examen.nomPrenomClasseExamen.config.JwtUtil;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.Role;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.AbonnementRepository;
@@ -21,12 +24,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
     private AbonnementRepository abonnementRepository;
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -119,8 +124,17 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-
-
-
+    public User processOAuth2User(OAuth2User oauthUser) {
+        String email = oauthUser.getAttribute("email");
+        return userRepository.findByEmail(email).orElseGet(() -> {
+            User user = new User();
+            user.setEmail(email);
+            user.setNom(oauthUser.getAttribute("name"));
+            user.setPhotoProfil(oauthUser.getAttribute("picture"));
+            user.setMotDePasse(passwordEncoder.encode(UUID.randomUUID().toString())); // faux mdp
+            user.setRole(Role.USER); // ✅ TRÈS IMPORTANT
+            return userRepository.save(user);
+        });
+    }
 
 }
