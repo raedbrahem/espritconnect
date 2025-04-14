@@ -1,6 +1,7 @@
 package tn.esprit.examen.nomPrenomClasseExamen.config.bidding;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -20,8 +21,13 @@ public class BidWebSocketHandler extends TextWebSocketHandler {
     private final Map<Long, Product> activeProducts = new ConcurrentHashMap<>();
     private final Map<Long, Bid> currentHighestBids = new ConcurrentHashMap<>();
 
+    private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate; // For broadcasting messages
 
-    private UserRepository userRepository;  // Inject UserRepository to fetch the User object
+    public BidWebSocketHandler(UserRepository userRepository, SimpMessagingTemplate messagingTemplate) {
+        this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
+    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -51,9 +57,9 @@ public class BidWebSocketHandler extends TextWebSocketHandler {
                 Bid newBid = new Bid(product, bidder, bidAmount, LocalDateTime.now());
                 currentHighestBids.put(productId, newBid);
 
-                // Send a message back to the client about the new highest bid
+                // Broadcast the updated bid to all clients subscribed to the product (for real-time updates)
                 String bidUpdateMessage = "New bid placed: " + bidder.getNom() + " bid " + bidAmount;
-                session.sendMessage(new TextMessage(bidUpdateMessage));
+                messagingTemplate.convertAndSend("/topic/product/" + productId, bidUpdateMessage);  // This is where the message is sent to the topic
             } else {
                 // If the new bid is not higher, inform the user
                 session.sendMessage(new TextMessage("Your bid is not higher than the current bid."));
