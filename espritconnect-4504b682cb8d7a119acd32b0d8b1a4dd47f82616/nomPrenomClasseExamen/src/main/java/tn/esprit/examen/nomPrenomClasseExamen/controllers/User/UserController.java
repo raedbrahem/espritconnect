@@ -2,14 +2,12 @@ package tn.esprit.examen.nomPrenomClasseExamen.controllers.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.RegisterRequest;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.Role;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -33,7 +31,6 @@ public class UserController {
         user.setAdresse(request.getAdresse());
         user.setPhotoProfil(request.getPhotoProfil());
         user.setCarteEtudiant(request.getCarteEtudiant());
-        user.setRole(request.getRole() != null ? request.getRole() : Role.USER); // Rôle par défaut : USER si non spécifié
 
         User savedUser = userService.registerUser(user);
         return ResponseEntity.ok(savedUser);
@@ -43,4 +40,33 @@ public class UserController {
     public ResponseEntity<String> adminTest() {
         return ResponseEntity.ok("Ceci est un endpoint réservé aux admins !");
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+    // Nouveau endpoint pour la recherche d'utilisateurs
+    @GetMapping("/users/search")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam("keyword") String keyword) {
+        List<User> users = userService.searchUsers(keyword);
+        return ResponseEntity.ok(users);
+    }
+    // Accessible à tout le monde
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        return userService.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 }

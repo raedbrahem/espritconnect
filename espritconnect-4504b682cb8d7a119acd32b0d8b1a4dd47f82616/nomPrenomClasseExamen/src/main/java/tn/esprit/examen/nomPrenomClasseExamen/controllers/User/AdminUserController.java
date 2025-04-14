@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/admin")
 public class AdminUserController {
@@ -19,10 +17,14 @@ public class AdminUserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/users/{id}")
@@ -37,10 +39,6 @@ public class AdminUserController {
         return ResponseEntity.ok("User deleted successfully");
     }
 
-    // Nouveau endpoint pour la recherche d'utilisateurs
-    @GetMapping("/users/search")
-    public ResponseEntity<List<User>> searchUsers(@RequestParam("keyword") String keyword) {
-        List<User> users = userService.searchUsers(keyword);
-        return ResponseEntity.ok(users);
-    }
+
+
 }

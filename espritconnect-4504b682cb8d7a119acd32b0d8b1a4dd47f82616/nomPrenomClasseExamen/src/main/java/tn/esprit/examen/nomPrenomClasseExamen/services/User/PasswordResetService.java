@@ -97,7 +97,7 @@ public class PasswordResetService {
 
     // Envoi de l'email de réinitialisation
     private void sendResetEmail(String email, String token) {
-        String resetUrl = "http://localhost:8089/api/reset-password?token=" + token;
+        String resetUrl = "http://localhost:4200/reset-password?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Password Reset Request");

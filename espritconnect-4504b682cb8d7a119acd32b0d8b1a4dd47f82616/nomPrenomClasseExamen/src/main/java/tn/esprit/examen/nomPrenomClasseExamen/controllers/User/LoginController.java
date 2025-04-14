@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,21 +41,31 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         try {
-            authenticationManager.authenticate(
+            // Authentifier l'utilisateur
+            Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getMotDePasse())
             );
-            String token = generateToken(loginRequest.getEmail());
+
+            // Extraire le rôle de l'utilisateur depuis ses autorités
+            String role = auth.getAuthorities().stream()
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("No role found"))
+                    .getAuthority()
+                    .replace("ROLE_", ""); // Supposons que le rôle est préfixé par "ROLE_"
+
+            String token = generateToken(loginRequest.getEmail(), role);
             return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
 
-    private String generateToken(String email) {
+    private String generateToken(String email, String role) {
         long expirationTime = 86400000; // 1 jour en millisecondes
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTime);
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
                 .signWith(secretKey)
