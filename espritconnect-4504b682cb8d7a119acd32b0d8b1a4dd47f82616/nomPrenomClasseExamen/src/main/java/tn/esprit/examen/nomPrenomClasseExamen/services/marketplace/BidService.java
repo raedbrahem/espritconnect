@@ -51,16 +51,15 @@ public class BidService {
             Product product = highestBid.getProduct();
 
             // Only process if the deadline has passed and no buyer has been assigned yet
-            if (product.getDeadline().isBefore(LocalDateTime.now()) && product.getBuyer() == null) {
+            if (product.getDeadline().isBefore(LocalDateTime.now())) {
 
                 // If there is a valid bid (greater than or equal to the asking price), assign it as the buyer
-                if (highestBid.getAmount().compareTo(product.getAskingPrice()) >= 0) {
                     product.setBuyer(highestBid.getBidder()); // Set the highest bidder as the buyer
                     product.setItemState(false);  // Mark product as sold
                     productRepository.save(product); // Save the updated product
                     System.out.println("Product " + product.getName() + " sold to " + highestBid.getBidder().getNom());
                 }
-            }
+
         });
     }
 

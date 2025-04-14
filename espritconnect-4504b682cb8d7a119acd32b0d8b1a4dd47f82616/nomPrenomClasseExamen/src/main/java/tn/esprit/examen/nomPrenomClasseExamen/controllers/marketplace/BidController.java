@@ -14,7 +14,7 @@ import tn.esprit.examen.nomPrenomClasseExamen.services.marketplace.BidService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 @RestController
-@RequestMapping("/api/bids")
+@RequestMapping("/bids")
 public class BidController {
 
     private final BidService bidService;
@@ -82,4 +82,5 @@ public class BidController {
         bidService.checkAndUpdateExpiredProducts();  // This checks if products are expired and updates the buyer accordingly
         return "Product buyer updated if expired bidding ended.";
     }
+
 }
