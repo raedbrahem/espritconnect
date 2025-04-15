@@ -3,13 +3,16 @@ package tn.esprit.examen.nomPrenomClasseExamen.services.marketplace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Bid;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Order;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Product;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.BidRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.OrderRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,7 +23,10 @@ public class BidService {
     private ProductRepository productRepository;
 
     @Autowired
-    private BidRepository bidRepository; // Assuming you have a repository for persisting bids
+    private BidRepository bidRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate; // For WebSocket messaging
@@ -65,21 +71,66 @@ public class BidService {
         messagingTemplate.convertAndSend("/topic/bidding/" + product.getIdProduct(), message);
     }
 
-    // This method is to simulate checking and updating the buyer when auction expires
+    /**
+     * Check for expired products, update buyers, and create orders automatically
+     */
     public void checkAndUpdateExpiredProducts() {
-        // Loop through all active bids and check for expired auctions, update the buyer if needed
+        // First, check in-memory bids
         currentHighestBids.forEach((productId, highestBid) -> {
             Product product = highestBid.getProduct();
 
-            // Only process if the deadline has passed and no buyer has been assigned yet
+            // Only process if the deadline has passed and the product is still active
             if (product.getDeadline().isBefore(LocalDateTime.now()) && product.isItemState()) {
-                // If there is a valid bid (greater than or equal to the asking price), assign it as the buyer
-                product.setBuyer(highestBid.getBidder()); // Set the highest bidder as the buyer
+                // Set the highest bidder as the buyer
+                product.setBuyer(highestBid.getBidder());
                 product.setItemState(false);  // Mark product as sold
-                productRepository.save(product); // Save the updated product
+                Product savedProduct = productRepository.save(product);
 
-                System.out.println("Product " + product.getName() + " sold to " + highestBid.getBidder().getNom());
+                // Create an order automatically
+                createOrderForProduct(savedProduct, highestBid.getAmount());
+
+                System.out.println("Product " + product.getName() + " sold to " + highestBid.getBidder().getNom() + ". Order created automatically.");
             }
         });
+
+        // Also check database for any products that have expired but don't have orders yet
+        List<Product> expiredProducts = productRepository.findByDeadlineBeforeAndBuyerIsNotNullAndSellerIsNotNull(LocalDateTime.now());
+
+        for (Product product : expiredProducts) {
+            // Check if an order already exists for this product
+            if (!orderRepository.existsByProductId(product.getIdProduct())) {
+                // Find the highest bid for this product from the database
+                Bid highestBid = bidRepository.findTopByProductOrderByAmountDesc(product);
+                BigDecimal finalPrice = (highestBid != null) ? highestBid.getAmount() : product.getAskingPrice();
+
+                // Create an order for this product
+                createOrderForProduct(product, finalPrice);
+
+                System.out.println("Order created for previously expired product: " + product.getName());
+            }
+        }
+    }
+
+    /**
+     * Create an order for a product that has been sold
+     * @param product The product to create an order for
+     * @param finalPrice The final price of the product
+     * @return The created order
+     */
+    private Order createOrderForProduct(Product product, BigDecimal finalPrice) {
+        // Check if an order already exists for this product
+        if (orderRepository.existsByProductId(product.getIdProduct())) {
+            System.out.println("Order already exists for product: " + product.getName());
+            return null;
+        }
+
+        // Create a new order
+        Order order = new Order();
+        order.setProduct(product);
+        order.setFinalPrice(finalPrice);
+        order.setOrderDate(LocalDateTime.now());
+
+        // Save the order
+        return orderRepository.save(order);
     }
 }

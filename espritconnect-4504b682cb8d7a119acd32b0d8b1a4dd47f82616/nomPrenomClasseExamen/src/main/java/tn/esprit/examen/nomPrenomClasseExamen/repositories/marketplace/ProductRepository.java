@@ -5,6 +5,7 @@ import org.springframework.data.repository.query.Param;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p.idProduct FROM Product p WHERE p.idProduct = :id")
     Long findProductIdById(@Param("id") Long id);
 
+    // Find products by seller ID
+    List<Product> findBySellerId(Long sellerId);
 
+    // Find products by buyer ID
+    List<Product> findByBuyerId(Long buyerId);
+
+    // Find expired products with both buyer and seller not null
+    List<Product> findByDeadlineBeforeAndBuyerIsNotNullAndSellerIsNotNull(LocalDateTime deadline);
 
 }

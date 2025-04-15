@@ -13,9 +13,13 @@ public class BiddingScheduler {
         this.bidService = bidService;
     }
 
-    // Scheduled task to check every minute if there are expired products
-    @Scheduled(fixedRate = 2000) // 1 minute in milliseconds
+    /**
+     * Scheduled task to check every minute if there are expired products
+     * and create orders for them automatically
+     */
+    @Scheduled(fixedRate = 60000) // 1 minute in milliseconds
     public void checkAndUpdateExpiredProducts() {
         bidService.checkAndUpdateExpiredProducts();
+        System.out.println("Scheduled task: Checked for expired products and created orders at " + java.time.LocalDateTime.now());
     }
 }

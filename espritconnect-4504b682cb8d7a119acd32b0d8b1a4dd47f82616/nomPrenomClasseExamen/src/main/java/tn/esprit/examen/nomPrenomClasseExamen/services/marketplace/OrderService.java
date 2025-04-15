@@ -1,7 +1,10 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.marketplace;
 
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Order;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Product;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.OrderRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.ProductRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +13,11 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
 
     // Create a new order
@@ -33,9 +38,21 @@ public class OrderService {
     }
 
     // Delete an order by ID
+    @Transactional
     public boolean deleteOrder(Long id) {
-        if (orderRepository.existsById(id)) {
-            orderRepository.deleteById(id);
+        Optional<Order> orderOpt = orderRepository.findById(id);
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+
+            // Get the product associated with this order
+            Product product = order.getProduct();
+
+            // First, remove the order
+            orderRepository.delete(order);
+
+            // Log the deletion
+            System.out.println("Order deleted successfully: " + id);
+
             return true;
         }
         return false;

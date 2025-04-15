@@ -51,11 +51,17 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteOrder(@PathVariable Long id) {
-        boolean deleted = orderService.deleteOrder(id);
-        if (!deleted) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        try {
+            boolean deleted = orderService.deleteOrder(id);
+            if (!deleted) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Order not found with ID: " + id);
+            }
+            return ResponseEntity.ok("Order deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting order: " + e.getMessage());
         }
-        return ResponseEntity.ok(true);
     }
 }
