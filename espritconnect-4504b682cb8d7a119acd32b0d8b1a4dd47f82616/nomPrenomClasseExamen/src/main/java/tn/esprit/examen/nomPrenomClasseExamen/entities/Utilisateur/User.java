@@ -44,6 +44,10 @@ public class User {
     private String statutVerification;
     private String telephone;
 
+    // Stripe related fields
+    private String stripeCustomerId; // For buyers to make payments
+    private String stripeAccountId;  // For sellers to receive payments
+
     // The users that this user follows
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

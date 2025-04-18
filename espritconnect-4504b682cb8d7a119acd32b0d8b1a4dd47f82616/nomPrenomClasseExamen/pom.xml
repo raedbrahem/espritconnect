@@ -71,6 +71,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>24.10.0</version> <!-- check for latest version -->
+        </dependency>
 
         <!-- Spring Security Starter -->
         <dependency>

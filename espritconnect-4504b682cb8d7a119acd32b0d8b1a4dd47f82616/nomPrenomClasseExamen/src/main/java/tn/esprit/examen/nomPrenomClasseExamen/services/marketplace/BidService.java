@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Bid;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Order;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Payment;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.PaymentStatus;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.marketplace.Product;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.BidRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.OrderRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.PaymentRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.marketplace.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,9 @@ public class BidService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate; // For WebSocket messaging
@@ -131,6 +137,23 @@ public class BidService {
         order.setOrderDate(LocalDateTime.now());
 
         // Save the order
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        // Create a payment record for the order
+        if (savedOrder != null && product.getBuyer() != null && product.getSeller() != null) {
+            Payment payment = new Payment();
+            payment.setOrder(savedOrder);
+            payment.setBuyer(product.getBuyer());
+            payment.setSeller(product.getSeller());
+            payment.setAmount(finalPrice);
+            payment.setStatus(PaymentStatus.PENDING);
+            payment.setCreatedAt(LocalDateTime.now());
+
+            paymentRepository.save(payment);
+
+            System.out.println("Payment record created for order #" + savedOrder.getIdOrder());
+        }
+
+        return savedOrder;
     }
 }
