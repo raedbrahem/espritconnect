@@ -8,9 +8,7 @@ public enum CategoryType {
     BOOKS,
     GROCERY,
     HOME_APPLIANCES,
-    SPORTS,
-    BEAUTY,
-    AUTOMOTIVE;
+    SPORTS;
 
     // Optionally, you can add methods to each enum if needed.
 }
