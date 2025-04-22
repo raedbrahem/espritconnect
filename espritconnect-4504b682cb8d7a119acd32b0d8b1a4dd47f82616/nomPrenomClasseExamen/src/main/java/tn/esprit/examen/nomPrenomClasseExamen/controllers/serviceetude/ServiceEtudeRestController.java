@@ -7,7 +7,7 @@ import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etud
 import tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude.IServiceEtude;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 @RequiredArgsConstructor
 @RequestMapping("/service-etude")
 @RestController
@@ -53,5 +53,12 @@ public class ServiceEtudeRestController {
     @PostMapping("/unassign/{userId}/{serviceId}")
     public void unassignProjetToService(@PathVariable Long userId, @PathVariable Long serviceId) {
         serviceEtudeService.unassignProjetToService(userId, serviceId);
+    }
+
+    @GetMapping("/is-assigned/{userId}/{serviceId}")
+    public boolean isUserAssignedToService(
+            @PathVariable Long userId,
+            @PathVariable Long serviceId) {
+        return serviceEtudeService.isUserAssignedToService(userId, serviceId);
     }
 }

@@ -12,4 +12,5 @@ public interface IServiceEtude {
     Service_Etude retrieveServiceEtude(Long id);
     void assignProjetToService(Long userId, Long serviceId);
     void unassignProjetToService(Long userId, Long serviceId);
+    boolean isUserAssignedToService(Long userId, Long serviceId);
 }

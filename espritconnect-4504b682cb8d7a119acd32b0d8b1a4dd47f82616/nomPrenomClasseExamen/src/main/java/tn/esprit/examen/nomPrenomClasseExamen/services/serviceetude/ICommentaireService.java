@@ -10,4 +10,5 @@ public interface ICommentaireService {
     Commentaire updateCommentaire(Commentaire commentaire);
     List<Commentaire> getAllCommentaires();
     Commentaire retrieveCommentaire(Long id);
+    List<Commentaire> getCommentairesByServiceEtudeId(Long serviceEtudeId);
 }

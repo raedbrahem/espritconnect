@@ -1,7 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.CommentaireRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.ITutoringRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.ServiceEtudeRepository;
@@ -9,6 +8,8 @@ import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.rating_e
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Service;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -25,40 +26,35 @@ public class StatisticsService implements IStatisticsService {
     @Autowired
     private CommentaireRepository commentaireRepository;
 
-    // Example: Calculate average rating per tutor
     @Override
-    public Map<Long, Double> getAverageRatingPerTutor() {
+    public Map<String, Double> getAverageRatingPerTutor() {
         List<Object[]> results = ratingEtudeRepository.findAverageRatingPerTutor();
         return results.stream()
                 .collect(Collectors.toMap(
-                        result -> ((Number) result[0]).longValue(), // tutorId
+                        result -> (String) result[0], // tutorName
                         result -> ((Number) result[1]).doubleValue() // avgRating
                 ));
     }
 
-    // Example: Calculate number of tutoring sessions per tutor
     @Override
-    public Map<Long, Long> getNumberOfSessionsPerTutor() {
+    public Map<String, Long> getNumberOfSessionsPerTutor() {
         List<Object[]> results = tutoringEventRepository.countSessionsByTutor();
         return results.stream()
                 .collect(Collectors.toMap(
-                        result -> ((Number) result[0]).longValue(), // tutorId
+                        result -> (String) result[0], // tutorName
                         result -> ((Number) result[1]).longValue() // sessionCount
                 ));
     }
 
-    // Example: Calculate total hours spent tutoring per tutor
     @Override
-    public Map<Long, Double> getTotalHoursPerTutor() {
+    public Map<String, Double> getTotalHoursPerTutor() {
         List<Object[]> results = tutoringEventRepository.sumTutoringHoursByTutor();
         return results.stream()
                 .collect(Collectors.toMap(
-                        result -> ((Number) result[0]).longValue(), // tutorId
+                        result -> (String) result[0], // tutorName
                         result -> ((Number) result[1]).doubleValue() // totalHours
                 ));
     }
-
-    // Example: Calculate most popular subjects
     @Override
     public Map<String, Long> getMostPopularSubjects() {
         List<Object[]> results = serviceEtudeRepository.countBySubject();

@@ -38,4 +38,9 @@ public class RatingEtudeServiceImpl implements IRating_etudeService {
         return ratingEtudeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rating not found with ID: " + id));
     }
+
+    @Override
+    public List<rating_etude> getRatingsByServiceEtudeId(Long serviceEtudeId) {
+        return ratingEtudeRepository.findByServiceEtudeId(serviceEtudeId);
+    }
 }

@@ -1,4 +1,5 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,6 +35,7 @@ public class TutoringEvent implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
+    @JsonIgnore
     User tutor;
 
     @ManyToOne
@@ -43,4 +45,7 @@ public class TutoringEvent implements Serializable {
     @ManyToOne
     @JoinColumn(name = "service_etude_id", nullable = false)
     Service_Etude serviceEtude;
+
+    @Column(nullable = false)
+    float price;
 }

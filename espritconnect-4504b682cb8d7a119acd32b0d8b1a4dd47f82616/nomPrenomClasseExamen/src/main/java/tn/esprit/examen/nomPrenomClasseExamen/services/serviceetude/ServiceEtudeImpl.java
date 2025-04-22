@@ -2,12 +2,10 @@ package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.User.UserRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.ServiceEtudeRepository;
-import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserService;
-
 import java.util.List;
 
 @Service
@@ -69,5 +67,18 @@ public class ServiceEtudeImpl implements IServiceEtude {
         }
         userRepository.save(user);
         serviceEtudeRepository.save(serviceEtude);
+    }
+
+    @Override
+    public boolean isUserAssignedToService(Long userId, Long serviceId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        Service_Etude service = serviceEtudeRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + serviceId));
+
+        // Check both sides of the relationship
+        return user.getServiceEtudesProvided().contains(service) ||
+                service.getClients().contains(user);
     }
 }

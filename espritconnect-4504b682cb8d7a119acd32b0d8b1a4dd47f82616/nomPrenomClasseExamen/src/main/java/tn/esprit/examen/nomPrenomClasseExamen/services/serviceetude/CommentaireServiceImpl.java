@@ -25,7 +25,7 @@ public class CommentaireServiceImpl implements ICommentaireService {
 
     @Override
     public Commentaire updateCommentaire(Commentaire commentaire) {
-            return commentaireRepository.save(commentaire);
+        return commentaireRepository.save(commentaire);
     }
 
     @Override
@@ -37,5 +37,10 @@ public class CommentaireServiceImpl implements ICommentaireService {
     public Commentaire retrieveCommentaire(Long id) {
         return commentaireRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Commentaire not found with ID: " + id));
+    }
+
+    @Override
+    public List<Commentaire> getCommentairesByServiceEtudeId(Long serviceEtudeId) {
+        return commentaireRepository.findByServiceEtudeId(serviceEtudeId);
     }
 }

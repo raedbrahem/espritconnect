@@ -9,4 +9,5 @@ public interface IServiceTutoringEvent {
     void deleteTutoringEvent(TutoringEvent tutoringEvent); // Delete a tutoring event
     TutoringEvent updateTutoringEvent(TutoringEvent tutoringEvent); // Update an existing tutoring event
     List<TutoringEvent> getAllTutoringEvents(); // Retrieve all tutoring events
+    TutoringEvent retrieveTutoringEvent(Long id);
 }
