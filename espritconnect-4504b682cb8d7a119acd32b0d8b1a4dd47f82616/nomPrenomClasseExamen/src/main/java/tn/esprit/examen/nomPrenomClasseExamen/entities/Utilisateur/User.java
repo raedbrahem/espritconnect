@@ -3,10 +3,12 @@ package tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.threeten.bp.LocalDateTime;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "users")
@@ -30,11 +32,16 @@ public class User {
     private String photoProfil;
     private Date dateInscription;
 
+    @Column(name = "code_verification")
+    private String codeVerification;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private String statutVerification;
     private String telephone;
+
+
 
 
 
@@ -59,5 +66,8 @@ public class User {
     public void setServiceEtudesProvided(List<Service_Etude> serviceEtudesProvided) {
         this.serviceEtudesProvided = serviceEtudesProvided;
     }
+
+
+
 
 }

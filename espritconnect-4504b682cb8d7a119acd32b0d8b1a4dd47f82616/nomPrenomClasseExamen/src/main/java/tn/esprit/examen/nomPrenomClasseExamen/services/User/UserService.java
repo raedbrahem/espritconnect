@@ -134,5 +134,15 @@ public class UserService implements UserDetailsService {
             return userRepository.save(user);
         });
     }
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+    public String jwtForEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return jwtUtil.generateToken(user);
+    }
+
+
+
 
 }
