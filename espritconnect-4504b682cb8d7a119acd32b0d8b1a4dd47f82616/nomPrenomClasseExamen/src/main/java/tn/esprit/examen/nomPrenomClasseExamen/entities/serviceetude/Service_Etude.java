@@ -48,7 +48,7 @@ public class Service_Etude implements Serializable {
     List<rating_etude> ratings = new ArrayList<>();
 
     // New ManyToMany relationship with User
-    @ManyToMany(mappedBy = "serviceEtudesProvided")
+    @ManyToMany(mappedBy = "serviceEtudesProvided",fetch = FetchType.EAGER)
     @JsonIgnore
     private List<User> clients;
 

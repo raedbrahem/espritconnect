@@ -1,5 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
@@ -9,6 +10,7 @@ import tn.esprit.examen.nomPrenomClasseExamen.repositories.serviceetude.ServiceE
 import java.util.List;
 
 @Service
+@Transactional
 public class ServiceEtudeImpl implements IServiceEtude {
 
     @Autowired
@@ -42,6 +44,7 @@ public class ServiceEtudeImpl implements IServiceEtude {
     }
 
     @Override
+    @Transactional
     public void assignProjetToService(Long userId, Long serviceId) {
         User user = userRepository.findById(userId).get();
         Service_Etude serviceEtude = serviceEtudeRepository.findById(serviceId).get();
@@ -56,6 +59,7 @@ public class ServiceEtudeImpl implements IServiceEtude {
     }
 
     @Override
+    @Transactional
     public void unassignProjetToService(Long userId, Long serviceId) {
         User user = userRepository.findById(userId).get();
         Service_Etude serviceEtude = serviceEtudeRepository.findById(serviceId).get();
@@ -80,5 +84,18 @@ public class ServiceEtudeImpl implements IServiceEtude {
         // Check both sides of the relationship
         return user.getServiceEtudesProvided().contains(service) ||
                 service.getClients().contains(user);
+    }
+
+    @Override
+    public Service_Etude retrieveServiceEtudeById(Long id) {
+        return serviceEtudeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + id));
+    }
+
+    @Override
+    public List<User> retrieveClientsByServiceEtudeId(Long serviceEtudeId) {
+        Service_Etude serviceEtude = serviceEtudeRepository.findById(serviceEtudeId)
+                .orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + serviceEtudeId));
+        return serviceEtude.getClients();
     }
 }

@@ -1,5 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.serviceetude;
 
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface IServiceEtude {
     void assignProjetToService(Long userId, Long serviceId);
     void unassignProjetToService(Long userId, Long serviceId);
     boolean isUserAssignedToService(Long userId, Long serviceId);
+    Service_Etude retrieveServiceEtudeById(Long id);
+    List<User> retrieveClientsByServiceEtudeId(Long serviceEtudeId);
 }
