@@ -98,4 +98,11 @@ public class ServiceEtudeImpl implements IServiceEtude {
                 .orElseThrow(() -> new RuntimeException("Service_Etude not found with ID: " + serviceEtudeId));
         return serviceEtude.getClients();
     }
+
+    @Override
+    public List<Service_Etude> retrieveServicesEtudeByTutorId(Long tutorId) {
+        User tutor = userRepository.findById(tutorId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + tutorId));
+        return serviceEtudeRepository.findByTutor(tutor);
+    }
 }

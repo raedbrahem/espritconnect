@@ -105,5 +105,11 @@ public class ServiceEtudeRestController {
     public List<User> getClientsByServiceEtudeId(@PathVariable Long serviceEtudeId) {
         return serviceEtudeService.retrieveClientsByServiceEtudeId(serviceEtudeId);
     }
+
+
+    @GetMapping("/tutor/{tutorId}")
+    public List<Service_Etude> getServicesEtudeByTutorId(@PathVariable Long tutorId) {
+        return serviceEtudeService.retrieveServicesEtudeByTutorId(tutorId);
+    }
 }
 

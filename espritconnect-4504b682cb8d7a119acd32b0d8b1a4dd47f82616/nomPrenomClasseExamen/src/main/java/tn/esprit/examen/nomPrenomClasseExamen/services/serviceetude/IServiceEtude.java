@@ -16,4 +16,5 @@ public interface IServiceEtude {
     boolean isUserAssignedToService(Long userId, Long serviceId);
     Service_Etude retrieveServiceEtudeById(Long id);
     List<User> retrieveClientsByServiceEtudeId(Long serviceEtudeId);
+    List<Service_Etude> retrieveServicesEtudeByTutorId(Long tutorId);
 }
