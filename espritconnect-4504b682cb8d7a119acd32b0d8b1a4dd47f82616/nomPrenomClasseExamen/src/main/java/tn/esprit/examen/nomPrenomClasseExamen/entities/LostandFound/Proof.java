@@ -1,10 +1,13 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities.LostandFound;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,8 +21,15 @@ public class Proof {
     Long id_proof;
 
     @ManyToOne
-    @JoinColumn(name = "item_id")
-    Item matchedItem; // Optional: link to matched lost item
+    @JsonIgnore
+    User proprietaire;
+
+    @OneToOne
+    @JoinColumn(name = "item_id", referencedColumnName = "id_item")
+    private Item item;
+
+    // Optional: link to matched lost item
+
     String image_url;
     String description;
     LocalDateTime dateSubmitted;

@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.threeten.bp.LocalDateTime;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LostandFound.Feedback;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LostandFound.Item;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LostandFound.ItemMatchNotification;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.LostandFound.Proof;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.serviceetude.Service_Etude;
 
 import java.util.Date;
@@ -40,7 +44,8 @@ public class User {
 
     private String statutVerification;
     private String telephone;
-
+    //Asma
+    private String fcmToken;
 
 
 
@@ -68,6 +73,18 @@ public class User {
     }
 
 
+    /// / LOST & FOUND
+    @OneToMany(mappedBy = "proprietaire", cascade = CascadeType.ALL)
+    private List<Item> items;
+
+    @OneToMany(mappedBy = "proprietaire", cascade = CascadeType.ALL)
+    private List<Proof> uploadedProofs;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Feedback> feedbacks;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    private List<ItemMatchNotification> matchNotifications;
 
 
 }
