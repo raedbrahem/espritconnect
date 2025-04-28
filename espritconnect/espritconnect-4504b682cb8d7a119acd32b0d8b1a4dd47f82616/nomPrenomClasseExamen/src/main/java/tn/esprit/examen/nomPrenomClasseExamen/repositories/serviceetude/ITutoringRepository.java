@@ -21,4 +21,7 @@ public interface ITutoringRepository extends JpaRepository<TutoringEvent, Long> 
     @Query(value = "SELECT HOUR(t.start_time) AS hour, COUNT(*) AS sessionCount " +
             "FROM tutoring_event t GROUP BY HOUR(t.start_time)", nativeQuery = true)
     List<Object[]> countSessionsByTimeSlot();
+
+    List<TutoringEvent> findByTutorId(Long tutorId);
+    List<TutoringEvent> findByStudentId(Long studentId);
 }
