@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur.User;
 import tn.esprit.examen.nomPrenomClasseExamen.services.User.UserService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminUserController {
@@ -38,7 +40,18 @@ public class AdminUserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
+    @GetMapping("/users/statistics")
+    public ResponseEntity<?> getUserStatistics() {
+        long verified = userService.countByStatutVerification("officiel");
+        long unverified = userService.countByStatutVerification("en attente");
 
+        return ResponseEntity.ok(
+                Map.of(
+                        "officiel", verified,
+                        "en attente", unverified
+                )
+        );
+    }
 
 
 }

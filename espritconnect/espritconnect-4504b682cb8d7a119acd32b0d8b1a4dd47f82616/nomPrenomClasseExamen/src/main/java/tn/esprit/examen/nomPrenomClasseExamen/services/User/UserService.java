@@ -95,8 +95,10 @@ public class UserService implements UserDetailsService {
         user.setPhotoProfil(updatedUser.getPhotoProfil());
         user.setCarteEtudiant(updatedUser.getCarteEtudiant());
         user.setRole(updatedUser.getRole());
+        user.setStatutVerification(updatedUser.getStatutVerification());
         return userRepository.save(user);
     }
+
 
 
     public void deleteUser(Long id) {
@@ -142,7 +144,9 @@ public class UserService implements UserDetailsService {
         return jwtUtil.generateToken(user);
     }
 
-
+    public long countByStatutVerification(String statut) {
+        return userRepository.countByStatutVerification(statut);
+    }
 
 
 }
