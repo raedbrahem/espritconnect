@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "espritconnect-d8228",
+  "private_key_id": "25ae5d36fdd89753c15888e40b1c84e873cb991d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCWt1fDo3kNrzTc\nfQ76cP1IuolaocW8k/ayDuOgD5KYwLW+RkUQC2n8AcSnI86vxAZdP2wVGp8L4wkw\nM143ySGWUB4Dn6pf8Q6mmTWBipPU5fwRpopR2zzkVz/ZjYnneJFUcuyGZRN9z3l9\nn7SGzoh2FheB3eZeHKJtV38UXHUZkH1dAfrnEpabkqc3Ew3mlqd815JqHpgjWE5Z\n1UzlGzyEUW9t0P2UG3tnJvPsvTHmAdz0bcEHhM0LfccFxLqEsL13azqnk6gMqv8T\nzhk5woIv11iDOT+mayHeLSM4a8QsUAG6opnNqfThndpcGNZ420ZxCBoFR3/BHodi\nlKigLGrpAgMBAAECggEACJqe4ARNEi2WZEqfYvILA5k343yov9iSlMeqJvu8mrZ6\n/vR0AjPPRnEIu6HyWAZmIUdQRu7QyupDHq/6s6SVI5z0mbBbwZkOr7lqBzh/XVVj\ny9N+F1OKE7RcvhwJFgsZViuED91lUiFYsNs/1bz5/VkgLmxvN6AwMEh2cMB2eZG3\noVi2jYSMa47x/n95aAVxJoz/MOS9uGsIvfMpNKTtSP3lWJhZjdvd55xg5PBwfXbV\n4AUDn0xvxQMSIZ83HDfIEW1cbVZa2uPMTTy80ZO9uawNkI+E/ieNLnx3iwszq/tC\nqTsJiphylaOd3IWU6C56Z8Pv2JmzZP+AisIn5EGXoQKBgQDO254XcDRusWj248ux\nKzQgq1C0Kzz7Hwuf6c4HfwEHnRY3cXD9thjdsau+sJlw8u9bFkvXoUDGUgLyberl\nQhQud7LDeRAMXUIJqAL0RyYW1Owceja1UybhRHCHg3VwCS2CBTJmhpTXeenytbAc\n7cvfhB4PKr/w1HCzYQU3GuKgFwKBgQC6hWGF+vGMFM/mgp6WbQDTunr62s2jDNLl\nqFNq0VZ4juHsjFDj49fYCubUEqDrPhyt656m3oHDelWqfMD3saB2SIScCaXmC9R8\njsGD8gZ62/u1bKdKzcFg2U38cooIGtB7Yx7+469PKrMeMqwjtYaO0sCmL9Fdv2lj\non5K8k0s/wKBgHva82WFQV+lyftJmYSTIbsN2FyIJxMVG5i8HShP2wX8AHlh6w1+\nIpVa9EJQ6w695qLbTr3lRyt3n1wYhDSQxBSuhtKTghBlJk0x09L/Zsb05gqHAoq/\nJuBqYhZBl+dlF2JqSispGaWK0ZEJSFGJ8C/8oyLhrds8194PkVfVOSwxAoGADoAm\nF8ttke1gSFRpTdqFkPBTdUMjb4SktLQEYC6MIW1CRSiXdVAWTLZ0QZJ9LiyzABZs\nTB7KSc8t78YpHliR2ABFRvg9DIho6ZITm1VqiYymofEjhF5ApW3fcTvaXUzwXldT\nZo9+5pG0QSnBVjlbj6j0zzayeS5TXCqa1OrHczMCgYBRNhTwl9BkLw5U1ECoGEdS\nxJl+Vgx/uVXjSyMeC0bZ0xjuYn6zub/sWiXbO6VYmeo62Xhrfter65znWgeUnt89\n3xi+OGRQFyd5b07FnW/JgAQqh+59BIOLTba7vkjP3kc3LYVIAtA2l53p95IREx42\neaWettYl3peu1SEZVJinQQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@espritconnect-d8228.iam.gserviceaccount.com",
+  "client_id": "110791365494908099312",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40espritconnect-d8228.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
