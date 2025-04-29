@@ -30,12 +30,17 @@ public class DatabaseSchemaUpdater implements CommandLineRunner {
     public void run(String... args) throws Exception {
         try {
             logger.info("Executing database schema updates...");
-            
-            // Load and execute the SQL script
-            String sql = readResourceFile("db/update_category_column.sql");
-            logger.info("Executing SQL: {}", sql);
-            
-            jdbcTemplate.execute(sql);
+
+            // Load and execute the SQL scripts
+            String itemCategorySql = readResourceFile("db/update_category_column.sql");
+            logger.info("Executing SQL: {}", itemCategorySql);
+            jdbcTemplate.execute(itemCategorySql);
+
+            // Execute the product category update script
+            String productCategorySql = readResourceFile("db/update_product_category_column.sql");
+            logger.info("Executing SQL: {}", productCategorySql);
+            jdbcTemplate.execute(productCategorySql);
+
             logger.info("Database schema updated successfully");
         } catch (Exception e) {
             logger.error("Error updating database schema", e);
