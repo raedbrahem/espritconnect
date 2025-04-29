@@ -11,4 +11,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Recherche sur le nom et l'email
     List<User> findByNomContainingIgnoreCaseOrEmailContainingIgnoreCase(String nomKeyword, String emailKeyword);
+
+
+    long countByStatutVerification(String statut);
+
 }

@@ -84,6 +84,16 @@ public class ServiceTutoringEventImpl implements IServiceTutoringEvent {
     }
 
     @Override
+    public List<TutoringEvent> getTutoringEventsByTutor(Long tutorId) {
+        return tutoringEventRepository.findByTutorId(tutorId);
+    }
+
+    @Override
+    public List<TutoringEvent> getTutoringEventsByStudent(Long studentId) {
+        return tutoringEventRepository.findByStudentId(studentId);
+    }
+
+    @Override
     public TutoringEvent retrieveTutoringEvent(Long id) {
         return tutoringEventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("TutoringEvent not found"));

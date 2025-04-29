@@ -101,5 +101,17 @@ public class TutoringEventRestController {
     public List<TutoringEvent> getAllTutoringEvents() {
         return tutoringEventService.getAllTutoringEvents();
     }
+
+    @GetMapping("/by-tutor")
+    public List<TutoringEvent> getTutoringEventsByTutor() {
+        User user = getAuthenticatedUser();
+        return tutoringEventService.getTutoringEventsByTutor(user.getId());
+    }
+
+    @GetMapping("/by-student")
+    public List<TutoringEvent> getTutoringEventsByStudent() {
+        User user = getAuthenticatedUser();
+        return tutoringEventService.getTutoringEventsByStudent(user.getId());
+    }
 }
 
