@@ -203,9 +203,10 @@ public class ServiceLostandFoundImpl implements IServiceLostandFound {
         item.setRetrouve(retrouve);
 
         if (imageFile != null && !imageFile.isEmpty()) {
+
             String basePath = new File("uploads").getAbsolutePath();
             String subFolder = "items"; // Assuming this is for items only
-            String uploadDir = Paths.get(basePath, subFolder).toString();
+            String uploadDir = Paths.get(System.getProperty("user.dir"), "uploads", "items").toString();
 
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();

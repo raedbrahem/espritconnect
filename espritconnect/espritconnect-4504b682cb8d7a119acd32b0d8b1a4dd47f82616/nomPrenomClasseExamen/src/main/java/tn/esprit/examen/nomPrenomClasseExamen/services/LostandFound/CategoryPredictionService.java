@@ -1,5 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services.LostandFound;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
@@ -22,9 +23,13 @@ import java.util.UUID;
 @Service
 public class CategoryPredictionService {
 
+    @Value("${ai.scripts.path}")
+    private String aiScriptPath;
     private static final Logger logger = LoggerFactory.getLogger(CategoryPredictionService.class);
-    private static final String PYTHON_SCRIPT_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/ai_auto_categorizer/run_categorizer.bat";
-    private static final String TEMP_DIR_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/temp";
+    //private static final String PYTHON_SCRIPT_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/ai_auto_categorizer/run_categorizer.bat";
+    //private static final String TEMP_DIR_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/temp";
+    private static final String PYTHON_SCRIPT_PATH = System.getProperty("user.dir") + "/ai_auto_categorizer/run_categorizer.bat";
+    private static final String TEMP_DIR_PATH = System.getProperty("user.dir") + "/temp";
 
     private final String pythonScriptPath = PYTHON_SCRIPT_PATH;
     private final String tempDirPath;

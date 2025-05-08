@@ -226,11 +226,13 @@ def match_images(proof_image_pil, item_dir):
 
 def find_item_directories():
     """Find all possible item directories"""
+    print(os.getcwd())
     base_dirs = [
-        os.path.join("C:/Users/Tifa/Desktop/Master pull Spring/espritconnect", "uploads", "items"),
-        os.path.join("C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/uploads/items"),
+        os.path.join(os.getcwd(), "uploads", "items"),
+        os.path.join(os.getcwd(), "../uploads/items"),
+        os.path.join(os.getcwd(), "../../uploads/items"),
         os.path.join("uploads", "items"),
-        os.path.join("../uploads/items"),
+        os.path.join("espritconnect/uploads/items"),
         os.path.join("../../uploads/items"),
     ]
 

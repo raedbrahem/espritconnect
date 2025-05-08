@@ -5,18 +5,32 @@ def verify_paths():
     """Verify that the paths used in the Java code are correct"""
     print("Verifying paths for AI Auto Categorizer...")
 
-    # Check the Python script path
-    script_path = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/ai_auto_categorizer/enhanced_categorizer.py"
-    script_path = script_path.replace("/", os.path.sep)
+    # Check the Python script path - try multiple possible locations
+    possible_script_paths = [
+        os.path.join(os.getcwd(), "ai_auto_categorizer", "enhanced_categorizer.py"),
+        os.path.join(os.getcwd(), "enhanced_categorizer.py"),
+        os.path.join(os.path.dirname(os.getcwd()), "ai_auto_categorizer", "enhanced_categorizer.py"),
+        os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), "ai_auto_categorizer", "enhanced_categorizer.py")
+    ]
 
-    if os.path.exists(script_path):
-        print(f"✅ Python script found at: {script_path}")
-    else:
-        print(f"❌ Python script NOT found at: {script_path}")
+    script_path = None
+    for path in possible_script_paths:
+        path = path.replace("/", os.path.sep)
+        if os.path.exists(path):
+            script_path = path
+            print(f"✅ Python script found at: {script_path}")
+            break
 
-    # Check the temp directory path
-    temp_dir_path = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/temp"
-    temp_dir_path = temp_dir_path.replace("/", os.path.sep)
+    if script_path is None:
+        print("❌ Python script not found in any of the expected locations")
+        # Use a default path for further checks
+        script_path = os.path.join(os.getcwd(), "ai_auto_categorizer", "enhanced_categorizer.py")
+
+    # Check the temp directory path - use a relative path from the current directory
+    temp_dir_path = os.path.join(os.path.dirname(os.getcwd()), "temp")
+    if not os.path.exists(os.path.dirname(temp_dir_path)):
+        # Try a different location
+        temp_dir_path = os.path.join(os.getcwd(), "temp")
 
     if os.path.exists(temp_dir_path):
         print(f"✅ Temp directory found at: {temp_dir_path}")

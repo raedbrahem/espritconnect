@@ -420,8 +420,7 @@ public class EnhancedAiMatchingService {
             logger.info("Processing Cloudinary image URL: " + imageFilePath);
 
             // Path to the Python script directory
-            File scriptDir = new File("C:\\Users\\Tifa\\Desktop\\Master pull Spring\\espritconnect\\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\\nomPrenomClasseExamen\\ai_auto_categorizer" +
-                    "");
+            File scriptDir = new File(System.getProperty("user.dir"), "espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/src/main/resources/ai_auto_categorizer");
 
             if (!scriptDir.exists()) {
                 logger.warning("Python script directory not found: " + scriptDir.getAbsolutePath());

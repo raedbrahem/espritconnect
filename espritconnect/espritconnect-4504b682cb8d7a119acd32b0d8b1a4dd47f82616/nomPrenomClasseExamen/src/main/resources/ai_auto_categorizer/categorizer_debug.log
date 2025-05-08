@@ -1,0 +1,27 @@
+2025-04-27 14:50:44,767 - INFO - Starting categorizer diagnostic...
+2025-04-27 14:50:44,767 - INFO - Current working directory: C:\Users\Tifa\Desktop\Master pull Spring\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\nomPrenomClasseExamen\ai_auto_categorizer
+2025-04-27 14:50:44,767 - INFO - Python executable: C:\Users\Tifa\AppData\Local\Programs\Python\Python38\python.exe
+2025-04-27 14:50:44,767 - INFO - Python version: 3.8.8 (tags/v3.8.8:024d805, Feb 19 2021, 13:18:16) [MSC v.1928 64 bit (AMD64)]
+2025-04-27 14:50:44,768 - INFO - OpenCV version: 4.7.0
+2025-04-27 14:50:44,768 - INFO - All required files exist
+2025-04-27 14:50:44,769 - INFO - File yolov3.weights: 248007048 bytes
+2025-04-27 14:50:44,769 - INFO - File yolov3.cfg: 9131 bytes
+2025-04-27 14:50:44,770 - INFO - File coco.names: 703 bytes
+2025-04-27 14:50:44,770 - INFO - Attempting to load YOLO model...
+2025-04-27 14:50:44,770 - INFO - Absolute paths: weights=C:\Users\Tifa\Desktop\Master pull Spring\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\nomPrenomClasseExamen\ai_auto_categorizer\yolov3.weights, config=C:\Users\Tifa\Desktop\Master pull Spring\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\nomPrenomClasseExamen\ai_auto_categorizer\yolov3.cfg
+2025-04-27 14:50:45,657 - INFO - Model loaded successfully with 254 layers
+2025-04-27 14:50:45,661 - INFO - Output layers: ['yolo_82', 'yolo_94', 'yolo_106']
+2025-04-27 14:50:45,731 - INFO - Creating test image...
+2025-04-27 14:50:45,751 - INFO - Created test image: test_image.jpg
+2025-04-27 14:50:45,752 - INFO - Reading image from test_image.jpg
+2025-04-27 14:50:45,758 - INFO - Image loaded successfully: shape=(416, 416, 3)
+2025-04-27 14:50:45,874 - INFO - Calling enhanced_category_prediction...
+2025-04-27 14:50:52,276 - INFO - No objects detected with sufficient confidence
+2025-04-27 14:50:52,846 - INFO - Key detection score: 0.00
+2025-04-27 14:50:52,853 - INFO - Text detection score: 0.00
+2025-04-27 14:50:53,094 - INFO - Fabric texture detection score: 0.00
+2025-04-27 14:50:56,525 - INFO - No objects detected with sufficient confidence
+2025-04-27 14:50:56,785 - INFO - Low confidence detection (0.00) or 'Other' category, trying additional analysis
+2025-04-27 14:50:56,852 - INFO - Using best specialized detector: Electronics with score 0.35
+2025-04-27 14:50:56,852 - INFO - Prediction result: category=Electronics, confidence=0.35
+2025-04-27 14:50:56,853 - INFO - Diagnostic completed successfully.

@@ -60,6 +60,9 @@ public class AiMatchingService {
         }
     }
 
+    private static final String MATCHER_SCRIPT_PATH = System.getProperty("user.dir") + "/ai_auto_categorizer/improved_hybrid_matcher.py";
+    private static final String ITEM_IMAGE_DIR = System.getProperty("user.dir") + "/uploads/items";
+
     /**
      * Main entry point for matching a proof with lost items
      * @param proof The proof to match against lost items
@@ -180,8 +183,8 @@ public class AiMatchingService {
     public List<String> runHybridMatcher(String imageFilePath) {
         List<String> output = new ArrayList<>();
         try {
-            File scriptDir = new File("C:\\Users\\Tifa\\Desktop\\Master pull Spring\\espritconnect\\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\\nomPrenomClasseExamen\\ai_auto_categorizer");
-
+            //File scriptDir = new File(System.getProperty("user.dir"), "src/main/resources/ai_auto_categorizer");
+            File scriptDir = new File(MATCHER_SCRIPT_PATH).getParentFile();
             String proofImagePath = new File(imageFilePath).getAbsolutePath();
 
             ProcessBuilder pb = new ProcessBuilder("python", "improved_hybrid_matcher.py", proofImagePath);

@@ -8,10 +8,11 @@ import requests
 from io import BytesIO
 import logging
 import time
+import json
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('enhanced_matcher')
+logger = logging.getLogger('improved_matcher')
 
 def download_image_from_url(url):
     """Download an image from a URL and return both PIL image and bytes"""
@@ -36,7 +37,6 @@ def download_image_from_url(url):
         logger.error(f"Unexpected error processing image: {str(e)}")
         return None, None
 
-
 def compute_phash(image):
     """Compute perceptual hash for an image"""
     try:
@@ -44,6 +44,44 @@ def compute_phash(image):
     except Exception as e:
         logger.error(f"Error computing phash: {str(e)}")
         return None
+
+def compute_color_histogram(image_pil):
+    """Compute color histogram for an image"""
+    try:
+        # Convert PIL image to OpenCV format
+        img = np.array(image_pil)
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+        # Convert to HSV color space
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+        # Compute histograms for each channel
+        h_hist = cv2.calcHist([hsv], [0], None, [30], [0, 180])
+        s_hist = cv2.calcHist([hsv], [1], None, [32], [0, 256])
+        v_hist = cv2.calcHist([hsv], [2], None, [32], [0, 256])
+
+        # Normalize histograms
+        h_hist = cv2.normalize(h_hist, h_hist, 0, 1, cv2.NORM_MINMAX)
+        s_hist = cv2.normalize(s_hist, s_hist, 0, 1, cv2.NORM_MINMAX)
+        v_hist = cv2.normalize(v_hist, v_hist, 0, 1, cv2.NORM_MINMAX)
+
+        return h_hist, s_hist, v_hist
+    except Exception as e:
+        logger.error(f"Error computing color histogram: {str(e)}")
+        return None, None, None
+
+def compare_histograms(hist1, hist2):
+    """Compare two histograms using correlation method"""
+    try:
+        if hist1 is None or hist2 is None:
+            return 0
+
+        # Compare histograms using correlation method (higher is better)
+        score = cv2.compareHist(hist1, hist2, cv2.HISTCMP_CORREL)
+        return max(0, score)  # Ensure non-negative
+    except Exception as e:
+        logger.error(f"Error comparing histograms: {str(e)}")
+        return 0
 
 def compute_sift_features(image_pil):
     """Compute SIFT features for an image"""
@@ -100,6 +138,7 @@ def match_images(proof_image_pil, item_dir):
     # Compute features for proof image
     proof_phash = compute_phash(proof_image_pil)
     proof_keypoints, proof_descriptors = compute_sift_features(proof_image_pil)
+    proof_h_hist, proof_s_hist, proof_v_hist = compute_color_histogram(proof_image_pil)
 
     results = []
 
@@ -131,18 +170,52 @@ def match_images(proof_image_pil, item_dir):
             item_keypoints, item_descriptors = compute_sift_features(item_image)
             sift_score = match_sift_features(proof_descriptors, item_descriptors)
 
-            # Combine scores (lower is better for phash, higher is better for SIFT)
+            # Compute color histogram similarity
+            item_h_hist, item_s_hist, item_v_hist = compute_color_histogram(item_image)
+            h_score = compare_histograms(proof_h_hist, item_h_hist)
+            s_score = compare_histograms(proof_s_hist, item_s_hist)
+            v_score = compare_histograms(proof_v_hist, item_v_hist)
+            color_score = (h_score + s_score + v_score) / 3.0
+
+            # Combine scores (lower is better for phash, higher is better for SIFT and color)
             # Normalize phash distance (0-64) to 0-1 range and invert
             normalized_phash_score = 1 - (phash_distance / 64.0)
 
             # Combined score (weighted average)
-            combined_score = (0.7 * normalized_phash_score) + (0.3 * sift_score)
+            combined_score = (0.5 * normalized_phash_score) + (0.3 * sift_score) + (0.2 * color_score)
 
             # Convert to a distance metric (lower is better)
             combined_distance = int((1 - combined_score) * 10)
 
-            results.append((filename, combined_distance, phash_distance, sift_score))
-            logger.info(f"Matched {filename}: Combined={combined_distance}, pHash={phash_distance}, SIFT={sift_score:.3f}")
+            # Extract item ID from filename using various possible formats
+            item_id = None
+            try:
+                # Try to extract ID from filename using different patterns
+                if "_" in filename:
+                    # Format like "item_123.jpg"
+                    parts = filename.split("_")
+                    if len(parts) > 1:
+                        id_part = parts[1].split(".")[0]
+                        if id_part.isdigit():
+                            item_id = int(id_part)
+                elif "-" in filename:
+                    # Format like "item-123.jpg"
+                    parts = filename.split("-")
+                    if len(parts) > 1:
+                        id_part = parts[1].split(".")[0]
+                        if id_part.isdigit():
+                            item_id = int(id_part)
+                else:
+                    # Try to find any number in the filename
+                    import re
+                    numbers = re.findall(r'\d+', filename)
+                    if numbers:
+                        item_id = int(numbers[0])
+            except (ValueError, IndexError) as e:
+                logger.warning(f"Could not extract item ID from filename {filename}: {e}")
+
+            results.append((filename, combined_distance, phash_distance, sift_score, color_score, item_id))
+            logger.info(f"Matched {filename}: Combined={combined_distance}, pHash={phash_distance}, SIFT={sift_score:.3f}, Color={color_score:.3f}")
 
         except Exception as e:
             logger.error(f"Failed to process {filename}: {str(e)}")
@@ -151,10 +224,30 @@ def match_images(proof_image_pil, item_dir):
     results.sort(key=lambda x: x[1])
     return results[:5]  # Return top 5 matches
 
+def find_item_directories():
+    """Find all possible item directories"""
+    print(os.getcwd())
+    base_dirs = [
+        os.path.join(os.getcwd(), "uploads", "items"),
+        os.path.join(os.getcwd(), "../uploads/items"),
+        os.path.join(os.getcwd(), "../../uploads/items"),
+        os.path.join("uploads", "items"),
+        os.path.join("espritconnect/uploads/items"),
+        os.path.join("../../uploads/items"),
+    ]
+
+    valid_dirs = []
+    for dir_path in base_dirs:
+        if os.path.exists(dir_path) and os.path.isdir(dir_path):
+            valid_dirs.append(dir_path)
+            logger.info(f"Found valid item directory: {dir_path}")
+
+    return valid_dirs
+
 # === MAIN ===
 if __name__ == "__main__":
     start_time = time.time()
-    logger.info("Starting enhanced hybrid matcher")
+    logger.info("Starting improved hybrid matcher")
 
     if len(sys.argv) < 2:
         logger.error("Please provide the Cloudinary image URL.")
@@ -172,16 +265,29 @@ if __name__ == "__main__":
         print("ERROR: Failed to download or process the image")
         sys.exit(1)
 
+    # Step 2: Find valid item directories
+    item_dirs = find_item_directories()
 
+    if not item_dirs:
+        logger.error("No valid item directories found")
+        print("ERROR: No valid item directories found")
+        sys.exit(1)
 
-    # Step 3: Match image with local "items" folder
-    item_dir = os.path.join("C:/Users/Tifa/Desktop/PiSpring", "uploads", "items")
-    matches = match_images(proof_image_pil, item_dir)
+    # Step 3: Match image with all found item directories
+    all_matches = []
+    for item_dir in item_dirs:
+        matches = match_images(proof_image_pil, item_dir)
+        all_matches.extend(matches)
+
+    # Sort all matches by combined distance
+    all_matches.sort(key=lambda x: x[1])
+    best_matches = all_matches[:5]  # Take top 5 overall
 
     print("MATCHES:")
-    for img, combined_dist, phash_dist, sift_score in matches:
-        # Format: filename|combined_distance|phash_distance|sift_score
-        print(f"{img}|{combined_dist}|{phash_dist}|{sift_score:.3f}")
+    for img, combined_dist, phash_dist, sift_score, color_score, item_id in best_matches:
+        # Format: filename|combined_distance|phash_distance|sift_score|color_score|item_id
+        item_id_str = str(item_id) if item_id is not None else "null"
+        print(f"{img}|{combined_dist}|{phash_dist}|{sift_score:.3f}|{color_score:.3f}|{item_id_str}")
 
     elapsed_time = time.time() - start_time
     logger.info(f"Matching completed in {elapsed_time:.2f} seconds")

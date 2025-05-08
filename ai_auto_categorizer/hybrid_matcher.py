@@ -54,7 +54,28 @@ if __name__ == "__main__":
 
 
     # Step 3: Match image hashes with local "items" folder
-    item_dir = os.path.join("C:/Users/Tifa/Desktop/PiSpring", "uploads", "items")
+    # Try multiple possible locations for the items directory
+    possible_dirs = [
+        os.path.join(os.getcwd(), "uploads", "items"),
+        os.path.join(os.getcwd(), "../uploads/items"),
+        os.path.join(os.getcwd(), "../../uploads/items"),
+        os.path.join("uploads", "items"),
+        os.path.join("../uploads/items"),
+        os.path.join("../../uploads/items")
+    ]
+
+    # Find the first valid directory
+    item_dir = None
+    for dir_path in possible_dirs:
+        if os.path.exists(dir_path) and os.path.isdir(dir_path):
+            item_dir = dir_path
+            print(f"Using items directory: {item_dir}")
+            break
+
+    if item_dir is None:
+        print("ERROR: Could not find valid items directory")
+        sys.exit(1)
+
     matches = match_images(proof_image_pil, item_dir)
 
     print("MATCHES:")
