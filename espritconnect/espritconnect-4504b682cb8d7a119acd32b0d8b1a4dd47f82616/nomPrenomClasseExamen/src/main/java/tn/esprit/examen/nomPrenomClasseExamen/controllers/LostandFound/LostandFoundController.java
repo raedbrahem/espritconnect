@@ -92,11 +92,15 @@ public class LostandFoundController {
     public ResponseEntity<Item> addLostItem(@RequestBody Item item) {
 
         // 🔐 Get authenticated user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName(); // email
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        User currentUser = userRepository.findByEmail(currentUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //String currentUsername = authentication.getName(); // email
+
+        //User currentUser = userRepository.findByEmail(currentUsername)
+         //       .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         item.setProprietaire(currentUser);
         // 📦 Retrieve the user from DB
@@ -163,11 +167,10 @@ public class LostandFoundController {
     @GetMapping("/matches")
     public List<ItemMatchNotification> getUserMatchNotifications() {
         // Get authenticated user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName(); // email
 
-        User currentUser = userRepository.findByEmail(currentUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
         // Get all notifications for the user, ordered by creation date (newest first)
         return notificationRepository.findByRecipientIdOrderByCreatedAtDesc(currentUser.getId());

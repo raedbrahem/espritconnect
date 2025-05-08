@@ -23,8 +23,8 @@ import java.util.UUID;
 public class CategoryPredictionService {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryPredictionService.class);
-    private static final String PYTHON_SCRIPT_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/ai_auto_categorizer/run_categorizer.bat";
-    private static final String TEMP_DIR_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/temp";
+    private static final String PYTHON_SCRIPT_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/ai_auto_categorizer/run_categorizer.bat";
+    private static final String TEMP_DIR_PATH = "C:/Users/Tifa/Desktop/Master pull Spring/espritconnect/espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616/nomPrenomClasseExamen/temp";
 
     private final String pythonScriptPath = PYTHON_SCRIPT_PATH;
     private final String tempDirPath;

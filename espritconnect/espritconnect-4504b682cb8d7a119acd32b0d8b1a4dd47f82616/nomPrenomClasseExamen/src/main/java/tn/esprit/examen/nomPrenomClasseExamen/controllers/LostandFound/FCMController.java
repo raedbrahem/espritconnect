@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/fcm")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FCMController {
     private static final Logger logger = Logger.getLogger(FCMController.class.getName());
 

@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/match")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class MatchValidationController {
     private static final Logger logger = Logger.getLogger(MatchValidationController.class.getName());

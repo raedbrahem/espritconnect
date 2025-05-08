@@ -180,10 +180,11 @@ public class AiMatchingService {
     public List<String> runHybridMatcher(String imageFilePath) {
         List<String> output = new ArrayList<>();
         try {
-            File scriptDir = new File("C:\\Users\\Tifa\\Desktop\\PiSpring\\espritconnect\\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\\nomPrenomClasseExamen\\ai_auto_categorizer");
+            File scriptDir = new File("C:\\Users\\Tifa\\Desktop\\Master pull Spring\\espritconnect\\espritconnect-4504b682cb8d7a119acd32b0d8b1a4dd47f82616\\nomPrenomClasseExamen\\ai_auto_categorizer");
+
             String proofImagePath = new File(imageFilePath).getAbsolutePath();
 
-            ProcessBuilder pb = new ProcessBuilder("python", "enhanced_hybrid_matcher.py", proofImagePath);
+            ProcessBuilder pb = new ProcessBuilder("python", "improved_hybrid_matcher.py", proofImagePath);
             pb.directory(scriptDir);
 
             Process process = pb.start();

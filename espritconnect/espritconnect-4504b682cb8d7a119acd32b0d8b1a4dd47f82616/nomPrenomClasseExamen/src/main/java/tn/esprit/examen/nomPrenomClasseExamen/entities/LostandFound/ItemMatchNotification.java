@@ -28,7 +28,7 @@ public class ItemMatchNotification {
     private boolean isValidated;
     private Boolean isMatchAccepted; // null = not reviewed, true/false = reviewed
 
-    @OneToOne
+    @ManyToOne
     private Proof proof;
 
     @ManyToOne

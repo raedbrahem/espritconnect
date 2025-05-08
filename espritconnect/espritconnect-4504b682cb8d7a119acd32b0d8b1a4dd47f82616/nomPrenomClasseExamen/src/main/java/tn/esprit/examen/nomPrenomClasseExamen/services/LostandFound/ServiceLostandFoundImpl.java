@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.LostandFound.CategoryItem;
@@ -229,9 +230,13 @@ public class ServiceLostandFoundImpl implements IServiceLostandFound {
             boolean retrouve,
             MultipartFile imageFile
     ) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByEmail(auth.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //User currentUser = userRepository.findByEmail(auth.getName())
+         //       .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
         String subFolder = retrouve ? "proof" : "items";
         String imageUrl = null;

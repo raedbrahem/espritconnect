@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/proof")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProofController {
     private static final Logger logger = Logger.getLogger(ProofController.class.getName());
 
